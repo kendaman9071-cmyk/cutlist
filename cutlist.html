@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="カットリスト">
+<title>カットリスト</title>
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #fff;
+    --surface2: #ededea;
+    --border: #d8d6d0;
+    --text: #1a1a18;
+    --text2: #6b6a65;
+    --accent: #1a5cff;
+    --accent-dark: #0040dd;
+    --green: #1a8a3c;
+    --orange: #d4620a;
+    --red: #cc2200;
+    --rec: #ff3b30;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+    background: var(--bg); color: var(--text);
+    min-height: 100dvh;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  }
+
+/* ── Header ── */
+header {
+background: var(–surface);
+border-bottom: 1px solid var(–border);
+padding: 14px 20px 12px;
+padding-top: calc(14px + env(safe-area-inset-top));
+display: flex; align-items: flex-end; justify-content: space-between;
+position: sticky; top: 0; z-index: 10;
+}
+.header-title { font-size: 21px; font-weight: 700; letter-spacing: -0.5px; }
+.header-sub { font-size: 12px; color: var(–text2); margin-top: 2px; }
+.reset-btn {
+background: var(–surface2); border: none; border-radius: 50%;
+width: 40px; height: 40px; font-size: 17px; cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+}
+.reset-btn:active { background: var(–border); }
+
+main { padding: 16px; display: flex; flex-direction: column; gap: 14px; max-width: 600px; margin: 0 auto; }
+
+/* ── BIG REC BUTTON ── */
+.rec-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 8px 0 4px; }
+
+.rec-btn {
+width: 100%; height: 88px;
+border: none; border-radius: 20px;
+font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
+cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
+transition: transform 0.12s, background 0.15s;
+-webkit-appearance: none;
+background: var(–rec);
+color: #fff;
+box-shadow: 0 6px 24px rgba(255,59,48,0.35);
+}
+.rec-btn:active { transform: scale(0.97); }
+.rec-btn.idle   { background: var(–rec); box-shadow: 0 6px 24px rgba(255,59,48,0.35); }
+.rec-btn.listening {
+background: #c0000a;
+box-shadow: 0 6px 32px rgba(255,59,48,0.5);
+animation: recPulse 1.2s infinite;
+}
+.rec-btn.done { background: var(–accent); box-shadow: 0 6px 24px rgba(26,92,255,0.30); }
+@keyframes recPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.015)} }
+
+.rec-icon { font-size: 30px; }
+
+/* 認識中テキスト */
+.interim-box {
+width: 100%;
+background: var(–surface);
+border: 1.5px dashed var(–rec);
+border-radius: var(–radius-sm);
+padding: 10px 14px;
+font-size: 16px; color: var(–text2); min-height: 44px;
+display: none;
+}
+.interim-box.active { display: block; }
+
+/* ── Manual input (collapsible) ── */
+.manual-toggle {
+background: none; border: none; color: var(–text2);
+font-size: 13px; font-weight: 600; cursor: pointer;
+display: flex; align-items: center; gap: 5px; padding: 2px 0;
+-webkit-appearance: none;
+}
+.manual-toggle:active { opacity: 0.6; }
+.manual-area { display: none; flex-direction: column; gap: 8px; }
+.manual-area.open { display: flex; }
+
+textarea {
+width: 100%; min-height: 90px;
+background: var(–surface); border: 2px solid var(–border);
+border-radius: var(–radius); padding: 12px;
+font-size: 19px; font-family: ‘Courier New’, monospace;
+color: var(–text); resize: none; outline: none; line-height: 1.5;
+transition: border-color 0.15s; -webkit-appearance: none;
+}
+textarea:focus { border-color: var(–accent); }
+textarea::placeholder { color: var(–border); font-size: 14px; font-family: ‘Hiragino Sans’, sans-serif; }
+
+.calc-btn {
+background: var(–accent); color: #fff; border: none;
+border-radius: var(–radius); height: 56px;
+font-size: 18px; font-weight: 700;
+cursor: pointer; width: 100%;
+display: flex; align-items: center; justify-content: center; gap: 8px;
+transition: transform 0.12s, background 0.12s; -webkit-appearance: none;
+}
+.calc-btn:active { transform: scale(0.97); background: var(–accent-dark); }
+
+/* ── Options ── */
+.option-row {
+background: var(–surface); border-radius: var(–radius-sm);
+border: 1px solid var(–border); padding: 11px 14px;
+display: flex; align-items: center; gap: 12px;
+cursor: pointer; -webkit-user-select: none; user-select: none;
+}
+.option-row:active { background: var(–surface2); }
+.option-icon { font-size: 18px; width: 26px; text-align: center; }
+.option-text { flex: 1; }
+.option-title { font-size: 14px; font-weight: 500; }
+.option-sub { font-size: 11px; color: var(–text2); margin-top: 1px; }
+.toggle {
+position: relative; width: 48px; height: 27px;
+background: var(–border); border-radius: 14px;
+transition: background 0.2s; flex-shrink: 0;
+}
+.toggle::after {
+content: ‘’; position: absolute; width: 23px; height: 23px;
+background: #fff; border-radius: 50%; top: 2px; left: 2px;
+transition: transform 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.toggle.on { background: var(–accent); }
+.toggle.on::after { transform: translateX(21px); }
+
+/* ── Error ── */
+.error-box {
+background: #fff3f0; border: 1px solid #ffc5b8;
+border-radius: var(–radius-sm); padding: 12px 14px;
+font-size: 14px; color: var(–red);
+display: flex; gap: 8px; align-items: flex-start;
+}
+
+/* ── Result ── */
+.result-section { display: flex; flex-direction: column; gap: 12px; }
+.card {
+background: var(–surface); border: 1px solid var(–border);
+border-radius: var(–radius); overflow: hidden;
+box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.card-header {
+padding: 9px 14px; font-size: 11px; font-weight: 700;
+letter-spacing: 0.6px; text-transform: uppercase;
+display: flex; align-items: center; gap: 6px;
+border-bottom: 1px solid var(–border);
+}
+.card-header.orange { background: #fff7f0; color: var(–orange); }
+.card-header.blue   { background: #f0f4ff; color: var(–accent); }
+.card-header.green  { background: #f0f9f3; color: var(–green); }
+.card-body { padding: 13px 14px; }
+
+.sorted-list { display: flex; flex-wrap: wrap; gap: 7px; }
+.num-tag {
+background: #f0f4ff; border: 1px solid #c5d4ff;
+border-radius: 8px; padding: 6px 11px;
+font-family: ‘Courier New’, monospace; font-size: 17px;
+color: var(–text); display: flex; align-items: baseline; gap: 2px;
+}
+.num-tag .times { font-size: 12px; color: var(–accent); font-weight: 700; }
+
+.diff-table { width: 100%; border-collapse: collapse; }
+.diff-table tr + tr td { border-top: 1px solid var(–border); }
+.diff-table td { padding: 8px 3px; font-family: ‘Courier New’, monospace; font-size: 15px; }
+.diff-from { color: var(–text2); text-align: right; width: 36%; }
+.diff-arrow { color: var(–border); text-align: center; width: 10%; }
+.diff-to   { color: var(–text2); text-align: left; width: 36%; }
+.diff-val  { color: var(–green); font-weight: 700; text-align: right; width: 18%; }
+.diff-label { font-size: 11px; color: var(–accent); vertical-align: super; }
+
+.copy-btn {
+background: none; border: none; color: var(–accent);
+font-size: 13px; font-weight: 600; cursor: pointer;
+padding: 7px 0 0; display: flex; align-items: center; gap: 4px;
+-webkit-appearance: none;
+}
+.copy-btn:active { opacity: 0.6; }
+
+.memo-btn {
+background: var(–surface); border: 2px solid var(–accent);
+border-radius: var(–radius); height: 54px; color: var(–accent);
+font-size: 15px; font-weight: 600; cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+gap: 8px; width: 100%; transition: background 0.12s; -webkit-appearance: none;
+}
+.memo-btn:active { background: #f0f4ff; }
+
+/* ── Toast ── */
+.toast {
+position: fixed;
+bottom: calc(28px + env(safe-area-inset-bottom));
+left: 50%; transform: translateX(-50%) translateY(20px);
+background: rgba(20,20,20,0.88); color: #fff;
+font-size: 14px; font-weight: 500;
+padding: 10px 22px; border-radius: 100px;
+opacity: 0; transition: opacity 0.2s, transform 0.2s;
+pointer-events: none; white-space: nowrap; z-index: 999;
+backdrop-filter: blur(8px);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.fade-in { animation: fadeIn 0.22s ease both; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+.label { font-size: 12px; font-weight: 600; color: var(–text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+</style>
+
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="header-title">📐 カットリスト</div>
+    <div class="header-sub">録音 → 自動計算 → メモ</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">↺</button>
+</header>
+
+<main>
+
+  <!-- ── BIG REC BUTTON ── -->
+
+  <div class="rec-wrap">
+    <button class="rec-btn idle" id="recBtn" onclick="toggleRec()">
+      <span class="rec-icon" id="recIcon">🎤</span>
+      <span id="recLabel">録音開始</span>
+    </button>
+    <!-- 認識中テキスト -->
+    <div class="interim-box" id="interimBox">認識中…</div>
+  </div>
+
+  <!-- ── オプション ── -->
+
+  <div class="option-row" onclick="toggleOption('addZero')">
+    <div class="option-icon">➕</div>
+    <div class="option-text">
+      <div class="option-title">0を先頭に追加</div>
+      <div class="option-sub">入力に0がない場合に自動追加</div>
+    </div>
+    <div class="toggle" id="toggle-addZero"></div>
+  </div>
+
+  <!-- ── 手入力（折りたたみ） ── -->
+
+  <div>
+    <button class="manual-toggle" onclick="toggleManual()">
+      <span id="manualArrow">▶</span> 手入力で追加・修正
+    </button>
+    <div class="manual-area" id="manualArea">
+      <textarea id="inputText"
+        placeholder="例: 0 455 910 1365&#10;210かける2　でも OK"
+        inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false"
+      ></textarea>
+      <button class="calc-btn" onclick="processManual()">✅ この内容で計算する</button>
+    </div>
+  </div>
+
+  <!-- ── エラー ── -->
+
+  <div id="errorBox" style="display:none"></div>
+
+  <!-- ── 結果 ── -->
+
+  <div id="resultSection" class="result-section" style="display:none"></div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════
+//  State
+// ══════════════════════════════════════
+const state = { addZero: false };
+let recognition = null;
+let isListening  = false;
+let manualOpen   = false;
+let lastRaw      = '';
+
+function toggleOption(key) {
+  state[key] = !state[key];
+  document.getElementById('toggle-' + key).classList.toggle('on', state[key]);
+}
+
+function toggleManual() {
+  manualOpen = !manualOpen;
+  document.getElementById('manualArea').classList.toggle('open', manualOpen);
+  document.getElementById('manualArrow').textContent = manualOpen ? '▼' : '▶';
+}
+
+// ══════════════════════════════════════
+//  数値抽出
+// ══════════════════════════════════════
+function extractIntegers(input) {
+  let s = input.replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
+  const results = [];
+  s = s.replace(/(\d+)\s*(?:かける|×|\*|x|X)\s*(\d+)/g, (_, num, cnt) => {
+    const n = parseInt(num), c = Math.min(parseInt(cnt), 99);
+    for (let i = 0; i < c; i++) results.push(n);
+    return ' ';
+  });
+  const rest = s.match(/-?\d+/g);
+  if (rest) rest.forEach(v => results.push(parseInt(v)));
+  return results;
+}
+
+function groupSorted(sorted) {
+  const groups = [];
+  for (const v of sorted) {
+    if (groups.length && groups[groups.length-1].v === v) groups[groups.length-1].c++;
+    else groups.push({ v, c: 1 });
+  }
+  return groups;
+}
+
+function calcDiffs(groups) {
+  if (groups.length < 2) return [];
+  return groups.slice(1).map((g, i) => g.v - groups[i].v);
+}
+
+// ══════════════════════════════════════
+//  処理
+// ══════════════════════════════════════
+function process(raw) {
+  hideError(); clearResult();
+  lastRaw = raw;
+
+  let nums = extractIntegers(raw);
+  if (nums.length === 0) { showError('数値が見つかりませんでした。'); return; }
+  if (state.addZero && !nums.includes(0)) nums.unshift(0);
+
+  const sorted = [...nums].sort((a, b) => a - b);
+  const groups = groupSorted(sorted);
+  const diffs  = calcDiffs(groups);
+  renderResult({ nums, groups, diffs, raw });
+}
+
+function processManual() {
+  const raw = document.getElementById('inputText').value.trim();
+  if (!raw) { showError('数値が入力されていません。'); return; }
+  process(raw);
+}
+
+// ══════════════════════════════════════
+//  録音
+// ══════════════════════════════════════
+function toggleRec() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    showToast('Safariで開いてください（音声入力非対応）');
+    return;
+  }
+  isListening ? stopRec() : startRec();
+}
+
+function startRec() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'ja-JP';
+  recognition.continuous = false;
+  recognition.interimResults = true;
+
+  recognition.onstart = () => {
+    isListening = true;
+    setRecState('listening');
+  };
+
+  recognition.onresult = (e) => {
+    let interim = '', final = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) final += t;
+      else interim += t;
+    }
+    // 途中経過表示
+    const box = document.getElementById('interimBox');
+    box.textContent = interim || final || '認識中…';
+    box.classList.add('active');
+
+    // 確定したら自動計算
+    if (final) {
+      document.getElementById('inputText').value = final;
+      box.textContent = '「' + final + '」✓';
+      setTimeout(() => {
+        box.classList.remove('active');
+        process(final);
+        setRecState('done');
+      }, 600);
+    }
+  };
+
+  recognition.onerror = (e) => {
+    if (e.error !== 'no-speech') showToast('エラー: ' + e.error);
+    stopRec();
+  };
+  recognition.onend = () => {
+    if (isListening) stopRec();
+  };
+
+  recognition.start();
+}
+
+function stopRec() {
+  isListening = false;
+  try { recognition && recognition.stop(); } catch(e){}
+  // doneでなければidleに戻す
+  const btn = document.getElementById('recBtn');
+  if (!btn.classList.contains('done')) setRecState('idle');
+}
+
+function setRecState(s) {
+  const btn   = document.getElementById('recBtn');
+  const icon  = document.getElementById('recIcon');
+  const label = document.getElementById('recLabel');
+  btn.className = 'rec-btn ' + s;
+  if (s === 'idle') {
+    icon.textContent  = '🎤';
+    label.textContent = '録音開始';
+  } else if (s === 'listening') {
+    icon.textContent  = '⏹';
+    label.textContent = '録音中… タップで停止';
+  } else if (s === 'done') {
+    icon.textContent  = '🎤';
+    label.textContent = 'もう一度録音';
+    isListening = false;
+  }
+}
+
+// ══════════════════════════════════════
+//  描画
+// ══════════════════════════════════════
+function renderResult({ nums, groups, diffs, raw }) {
+  const sec = document.getElementById('resultSection');
+  sec.innerHTML = ''; sec.style.display = 'flex';
+
+  // 抽出
+  sec.appendChild(makeCard('orange', '🔢 抽出された数値', `
+    <div style="font-family:'Courier New',monospace;font-size:17px;line-height:1.8;word-break:break-all">${nums.join('&ensp;')}</div>
+    <div style="font-size:11px;color:var(--text2);margin-top:4px">${nums.length} 件</div>
+  `));
+
+  // 並べ替え
+  const tagsHTML = groups.map(g =>
+    `<div class="num-tag">${g.v}${g.c > 1 ? `<span class="times">×${g.c}</span>` : ''}</div>`
+  ).join('');
+  const sortedCopy = groups.map(g => g.c > 1 ? `${g.v}×${g.c}` : String(g.v)).join(', ');
+  sec.appendChild(makeCard('blue', '↕️ 昇順並べ替え', `
+    <div class="sorted-list">${tagsHTML}</div>
+    <button class="copy-btn" onclick="copyText(${JSON.stringify(sortedCopy)},'コピーしました')">📋 コピー</button>
+  `));
+
+  // 差分
+  let diffBody = '';
+  if (diffs.length === 0) {
+    diffBody = '<div style="color:var(--text2);font-size:14px">（数値が1種類のため差分なし）</div>';
+  } else {
+    const rows = diffs.map((d, i) => {
+      const fl = groups[i].c   > 1 ? `${groups[i].v}<span class="diff-label">×${groups[i].c}</span>`   : String(groups[i].v);
+      const tl = groups[i+1].c > 1 ? `${groups[i+1].v}<span class="diff-label">×${groups[i+1].c}</span>` : String(groups[i+1].v);
+      return `<tr><td class="diff-from">${fl}</td><td class="diff-arrow">→</td><td class="diff-to">${tl}</td><td class="diff-val">+${d}</td></tr>`;
+    }).join('');
+    const diffCopy = diffs.join('\n');
+    diffBody = `<table class="diff-table">${rows}</table>
+      <button class="copy-btn" onclick="copyText(${JSON.stringify(diffCopy)},'差分をコピーしました')">📋 差分をコピー</button>`;
+  }
+  sec.appendChild(makeCard('green', '📏 差分（重複は1件）', diffBody));
+
+  // メモ
+  const memoBtn = document.createElement('button');
+  memoBtn.className = 'memo-btn fade-in';
+  memoBtn.innerHTML = '📄 メモ形式でまとめてコピー';
+  memoBtn.onclick = () => {
+    const now = new Date().toLocaleString('ja-JP', { dateStyle:'short', timeStyle:'short' });
+    const sortedStr = groups.map(g => g.c > 1 ? `${g.v}×${g.c}` : String(g.v)).join(', ');
+    const diffStr   = diffs.length === 0 ? '（1種類のみ）' : diffs.join('\n');
+    const memo = [`【カットリスト】${now}`,'','■ 入力',raw,'','■ 並べ替え',sortedStr,'','■ 差分',diffStr].join('\n');
+    copyText(memo, 'メモをコピーしました ✓');
+  };
+  sec.appendChild(memoBtn);
+
+  sec.classList.add('fade-in');
+  setTimeout(() => sec.scrollIntoView({ behavior:'smooth', block:'start' }), 80);
+}
+
+function makeCard(cls, title, body) {
+  const d = document.createElement('div');
+  d.className = 'card fade-in';
+  d.innerHTML = `<div class="card-header ${cls}">${title}</div><div class="card-body">${body}</div>`;
+  return d;
+}
+
+// ══════════════════════════════════════
+//  ユーティリティ
+// ══════════════════════════════════════
+function showError(msg) {
+  const b = document.getElementById('errorBox');
+  b.innerHTML = `<div class="error-box">⚠️&nbsp;<span>${msg}</span></div>`;
+  b.style.display = 'block';
+}
+function hideError()   { document.getElementById('errorBox').style.display = 'none'; }
+function clearResult() { const s = document.getElementById('resultSection'); s.innerHTML=''; s.style.display='none'; }
+
+function resetAll() {
+  document.getElementById('inputText').value = '';
+  document.getElementById('interimBox').classList.remove('active');
+  hideError(); clearResult(); stopRec(); setRecState('idle');
+  showToast('リセットしました');
+}
+
+function copyText(text, msg) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast(msg || 'コピーしました ✓'));
+  } else {
+    const el = document.createElement('textarea');
+    el.value = text; el.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(el); el.select(); document.execCommand('copy');
+    document.body.removeChild(el); showToast(msg || 'コピーしました ✓');
+  }
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+document.getElementById('inputText').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); processManual(); }
+});
+</script>
+
+</body>
+</html>
