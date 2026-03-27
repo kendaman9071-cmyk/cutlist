@@ -317,6 +317,18 @@ function extractMM(input){
     return ' ';
   });
 
+  // 音声認識が「ニヒャクトー」→「200と」に変換するケースの対策
+  // 「Nと数字」→ N+数字（例: 200と10 → 210）
+  s=s.replace(/(\d+)\s*と\s*(\d+)/g,(_,a,b)=>{
+    results.push(parseInt(a)+parseInt(b));
+    return ' ';
+  });
+  // 「Nと」（後ろに数字なし）→ N+10（トー=10）
+  s=s.replace(/(\d+)\s*と(?!\d)/g,(_,a)=>{
+    results.push(parseInt(a)+10);
+    return ' ';
+  });
+
   // 残りのアラビア数字
   (s.match(/-?\d+/g)||[]).forEach(v=>results.push(parseInt(v)));
 
