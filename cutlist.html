@@ -10,223 +10,101 @@
 <title>カットリスト</title>
 <style>
   :root {
-    --bg: #f5f4f0;
-    --surface: #fff;
-    --surface2: #ededea;
-    --border: #d8d6d0;
-    --text: #1a1a18;
-    --text2: #6b6a65;
-    --accent: #1a5cff;
-    --accent-dark: #0040dd;
-    --green: #1a8a3c;
-    --orange: #d4620a;
-    --red: #cc2200;
-    --rec: #ff3b30;
-    --radius: 14px;
-    --radius-sm: 8px;
+    --bg:#f5f4f0;--surface:#fff;--surface2:#ededea;--border:#d8d6d0;
+    --text:#1a1a18;--text2:#6b6a65;--accent:#1a5cff;--accent-dark:#0040dd;
+    --green:#1a8a3c;--orange:#d4620a;--red:#cc2200;--rec:#ff3b30;
+    --radius:14px;--radius-sm:8px;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body {
-    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
-    background: var(--bg); color: var(--text);
-    min-height: 100dvh;
-    padding-bottom: calc(24px + env(safe-area-inset-bottom));
-  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:'Hiragino Sans','Hiragino Kaku Gothic ProN',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px 12px;padding-top:calc(14px + env(safe-area-inset-top));display:flex;align-items:flex-end;justify-content:space-between;position:sticky;top:0;z-index:10}
+  .header-title{font-size:21px;font-weight:700;letter-spacing:-.5px}
+  .header-sub{font-size:12px;color:var(--text2);margin-top:2px}
+  .reset-btn{background:var(--surface2);border:none;border-radius:50%;width:40px;height:40px;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .reset-btn:active{background:var(--border)}
+  main{padding:16px;display:flex;flex-direction:column;gap:14px;max-width:600px;margin:0 auto}
 
-/* ── Header ── */
-header {
-background: var(–surface);
-border-bottom: 1px solid var(–border);
-padding: 14px 20px 12px;
-padding-top: calc(14px + env(safe-area-inset-top));
-display: flex; align-items: flex-end; justify-content: space-between;
-position: sticky; top: 0; z-index: 10;
-}
-.header-title { font-size: 21px; font-weight: 700; letter-spacing: -0.5px; }
-.header-sub { font-size: 12px; color: var(–text2); margin-top: 2px; }
-.reset-btn {
-background: var(–surface2); border: none; border-radius: 50%;
-width: 40px; height: 40px; font-size: 17px; cursor: pointer;
-display: flex; align-items: center; justify-content: center;
-}
-.reset-btn:active { background: var(–border); }
+/* REC */
+.rec-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;padding:8px 0 4px}
+.rec-btn{width:100%;height:88px;border:none;border-radius:20px;font-size:26px;font-weight:800;letter-spacing:-.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:transform .12s,background .15s;-webkit-appearance:none;background:var(–rec);color:#fff;box-shadow:0 6px 24px rgba(255,59,48,.35)}
+.rec-btn:active{transform:scale(.97)}
+.rec-btn.listening{background:#c0000a;box-shadow:0 6px 32px rgba(255,59,48,.5);animation:recPulse 1.2s infinite}
+.rec-btn.done{background:var(–accent);box-shadow:0 6px 24px rgba(26,92,255,.3)}
+@keyframes recPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
+.interim-box{width:100%;background:var(–surface);border:1.5px dashed var(–rec);border-radius:var(–radius-sm);padding:10px 14px;font-size:16px;color:var(–text2);min-height:44px;display:none}
+.interim-box.active{display:block}
 
-main { padding: 16px; display: flex; flex-direction: column; gap: 14px; max-width: 600px; margin: 0 auto; }
+/* MODE TABS */
+.mode-tabs{display:flex;gap:8px}
+.mode-tab{flex:1;height:44px;border:2px solid var(–border);border-radius:10px;background:var(–surface);font-size:14px;font-weight:600;color:var(–text2);cursor:pointer;transition:all .15s;-webkit-appearance:none}
+.mode-tab.active{border-color:var(–accent);background:#f0f4ff;color:var(–accent)}
+.mode-tab:active{opacity:.7}
 
-/* ── BIG REC BUTTON ── */
-.rec-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 8px 0 4px; }
+/* MANUAL */
+.manual-toggle{background:none;border:none;color:var(–text2);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;padding:2px 0;-webkit-appearance:none}
+.manual-area{display:none;flex-direction:column;gap:8px}
+.manual-area.open{display:flex}
+textarea{width:100%;min-height:90px;background:var(–surface);border:2px solid var(–border);border-radius:var(–radius);padding:12px;font-size:19px;font-family:‘Courier New’,monospace;color:var(–text);resize:none;outline:none;line-height:1.5;transition:border-color .15s;-webkit-appearance:none}
+textarea:focus{border-color:var(–accent)}
+textarea::placeholder{color:var(–border);font-size:14px;font-family:‘Hiragino Sans’,sans-serif}
+.calc-btn{background:var(–accent);color:#fff;border:none;border-radius:var(–radius);height:56px;font-size:18px;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,background .12s;-webkit-appearance:none}
+.calc-btn:active{transform:scale(.97);background:var(–accent-dark)}
 
-.rec-btn {
-width: 100%; height: 88px;
-border: none; border-radius: 20px;
-font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
-cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
-transition: transform 0.12s, background 0.15s;
--webkit-appearance: none;
-background: var(–rec);
-color: #fff;
-box-shadow: 0 6px 24px rgba(255,59,48,0.35);
-}
-.rec-btn:active { transform: scale(0.97); }
-.rec-btn.idle   { background: var(–rec); box-shadow: 0 6px 24px rgba(255,59,48,0.35); }
-.rec-btn.listening {
-background: #c0000a;
-box-shadow: 0 6px 32px rgba(255,59,48,0.5);
-animation: recPulse 1.2s infinite;
-}
-.rec-btn.done { background: var(–accent); box-shadow: 0 6px 24px rgba(26,92,255,0.30); }
-@keyframes recPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.015)} }
+/* OPTIONS */
+.option-row{background:var(–surface);border-radius:var(–radius-sm);border:1px solid var(–border);padding:11px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;-webkit-user-select:none;user-select:none}
+.option-row:active{background:var(–surface2)}
+.option-icon{font-size:18px;width:26px;text-align:center}
+.option-text{flex:1}
+.option-title{font-size:14px;font-weight:500}
+.option-sub{font-size:11px;color:var(–text2);margin-top:1px}
+.toggle{position:relative;width:48px;height:27px;background:var(–border);border-radius:14px;transition:background .2s;flex-shrink:0}
+.toggle::after{content:’’;position:absolute;width:23px;height:23px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle.on{background:var(–accent)}
+.toggle.on::after{transform:translateX(21px)}
 
-.rec-icon { font-size: 30px; }
+/* ERROR */
+.error-box{background:#fff3f0;border:1px solid #ffc5b8;border-radius:var(–radius-sm);padding:12px 14px;font-size:14px;color:var(–red);display:flex;gap:8px;align-items:flex-start}
 
-/* 認識中テキスト */
-.interim-box {
-width: 100%;
-background: var(–surface);
-border: 1.5px dashed var(–rec);
-border-radius: var(–radius-sm);
-padding: 10px 14px;
-font-size: 16px; color: var(–text2); min-height: 44px;
-display: none;
-}
-.interim-box.active { display: block; }
+/* RESULT */
+.result-section{display:flex;flex-direction:column;gap:12px}
+.card{background:var(–surface);border:1px solid var(–border);border-radius:var(–radius);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.card-header{padding:9px 14px;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(–border)}
+.card-header.orange{background:#fff7f0;color:var(–orange)}
+.card-header.blue{background:#f0f4ff;color:var(–accent)}
+.card-header.green{background:#f0f9f3;color:var(–green)}
+.card-header.purple{background:#f5f0ff;color:#7b2ff7}
+.card-body{padding:13px 14px}
 
-/* ── Manual input (collapsible) ── */
-.manual-toggle {
-background: none; border: none; color: var(–text2);
-font-size: 13px; font-weight: 600; cursor: pointer;
-display: flex; align-items: center; gap: 5px; padding: 2px 0;
--webkit-appearance: none;
-}
-.manual-toggle:active { opacity: 0.6; }
-.manual-area { display: none; flex-direction: column; gap: 8px; }
-.manual-area.open { display: flex; }
+.sorted-list{display:flex;flex-wrap:wrap;gap:7px}
+.num-tag{background:#f0f4ff;border:1px solid #c5d4ff;border-radius:8px;padding:6px 11px;font-family:‘Courier New’,monospace;font-size:17px;color:var(–text);display:flex;align-items:baseline;gap:2px}
+.num-tag .times{font-size:12px;color:var(–accent);font-weight:700}
 
-textarea {
-width: 100%; min-height: 90px;
-background: var(–surface); border: 2px solid var(–border);
-border-radius: var(–radius); padding: 12px;
-font-size: 19px; font-family: ‘Courier New’, monospace;
-color: var(–text); resize: none; outline: none; line-height: 1.5;
-transition: border-color 0.15s; -webkit-appearance: none;
-}
-textarea:focus { border-color: var(–accent); }
-textarea::placeholder { color: var(–border); font-size: 14px; font-family: ‘Hiragino Sans’, sans-serif; }
+/* 寸法タグ（寸モード） */
+.sun-tag{background:#f5f0ff;border:1px solid #d4b8ff;border-radius:8px;padding:6px 11px;font-size:15px;color:var(–text);display:flex;flex-direction:column;gap:1px}
+.sun-tag .sun-val{font-family:‘Courier New’,monospace;font-size:16px;font-weight:600}
+.sun-tag .mm-val{font-size:11px;color:#7b2ff7}
+.sun-tag .times{font-size:11px;color:var(–accent);font-weight:700}
 
-.calc-btn {
-background: var(–accent); color: #fff; border: none;
-border-radius: var(–radius); height: 56px;
-font-size: 18px; font-weight: 700;
-cursor: pointer; width: 100%;
-display: flex; align-items: center; justify-content: center; gap: 8px;
-transition: transform 0.12s, background 0.12s; -webkit-appearance: none;
-}
-.calc-btn:active { transform: scale(0.97); background: var(–accent-dark); }
+.diff-table{width:100%;border-collapse:collapse}
+.diff-table tr+tr td{border-top:1px solid var(–border)}
+.diff-table td{padding:8px 3px;font-family:‘Courier New’,monospace;font-size:14px}
+.diff-from{color:var(–text2);text-align:right;width:34%}
+.diff-arrow{color:var(–border);text-align:center;width:8%}
+.diff-to{color:var(–text2);text-align:left;width:34%}
+.diff-val{color:var(–green);font-weight:700;text-align:right;width:24%}
+.diff-label{font-size:10px;color:var(–accent);vertical-align:super}
 
-/* ── Options ── */
-.option-row {
-background: var(–surface); border-radius: var(–radius-sm);
-border: 1px solid var(–border); padding: 11px 14px;
-display: flex; align-items: center; gap: 12px;
-cursor: pointer; -webkit-user-select: none; user-select: none;
-}
-.option-row:active { background: var(–surface2); }
-.option-icon { font-size: 18px; width: 26px; text-align: center; }
-.option-text { flex: 1; }
-.option-title { font-size: 14px; font-weight: 500; }
-.option-sub { font-size: 11px; color: var(–text2); margin-top: 1px; }
-.toggle {
-position: relative; width: 48px; height: 27px;
-background: var(–border); border-radius: 14px;
-transition: background 0.2s; flex-shrink: 0;
-}
-.toggle::after {
-content: ‘’; position: absolute; width: 23px; height: 23px;
-background: #fff; border-radius: 50%; top: 2px; left: 2px;
-transition: transform 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-}
-.toggle.on { background: var(–accent); }
-.toggle.on::after { transform: translateX(21px); }
+.recognized-raw{font-size:12px;color:var(–text2);font-style:italic;word-break:break-all;line-height:1.6}
 
-/* ── Error ── */
-.error-box {
-background: #fff3f0; border: 1px solid #ffc5b8;
-border-radius: var(–radius-sm); padding: 12px 14px;
-font-size: 14px; color: var(–red);
-display: flex; gap: 8px; align-items: flex-start;
-}
+.copy-btn{background:none;border:none;color:var(–accent);font-size:13px;font-weight:600;cursor:pointer;padding:7px 0 0;display:flex;align-items:center;gap:4px;-webkit-appearance:none}
+.copy-btn:active{opacity:.6}
+.memo-btn{background:var(–surface);border:2px solid var(–accent);border-radius:var(–radius);height:54px;color:var(–accent);font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:background .12s;-webkit-appearance:none}
+.memo-btn:active{background:#f0f4ff}
 
-/* ── Result ── */
-.result-section { display: flex; flex-direction: column; gap: 12px; }
-.card {
-background: var(–surface); border: 1px solid var(–border);
-border-radius: var(–radius); overflow: hidden;
-box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-}
-.card-header {
-padding: 9px 14px; font-size: 11px; font-weight: 700;
-letter-spacing: 0.6px; text-transform: uppercase;
-display: flex; align-items: center; gap: 6px;
-border-bottom: 1px solid var(–border);
-}
-.card-header.orange { background: #fff7f0; color: var(–orange); }
-.card-header.blue   { background: #f0f4ff; color: var(–accent); }
-.card-header.green  { background: #f0f9f3; color: var(–green); }
-.card-body { padding: 13px 14px; }
-
-.sorted-list { display: flex; flex-wrap: wrap; gap: 7px; }
-.num-tag {
-background: #f0f4ff; border: 1px solid #c5d4ff;
-border-radius: 8px; padding: 6px 11px;
-font-family: ‘Courier New’, monospace; font-size: 17px;
-color: var(–text); display: flex; align-items: baseline; gap: 2px;
-}
-.num-tag .times { font-size: 12px; color: var(–accent); font-weight: 700; }
-
-.diff-table { width: 100%; border-collapse: collapse; }
-.diff-table tr + tr td { border-top: 1px solid var(–border); }
-.diff-table td { padding: 8px 3px; font-family: ‘Courier New’, monospace; font-size: 15px; }
-.diff-from { color: var(–text2); text-align: right; width: 36%; }
-.diff-arrow { color: var(–border); text-align: center; width: 10%; }
-.diff-to   { color: var(–text2); text-align: left; width: 36%; }
-.diff-val  { color: var(–green); font-weight: 700; text-align: right; width: 18%; }
-.diff-label { font-size: 11px; color: var(–accent); vertical-align: super; }
-
-.copy-btn {
-background: none; border: none; color: var(–accent);
-font-size: 13px; font-weight: 600; cursor: pointer;
-padding: 7px 0 0; display: flex; align-items: center; gap: 4px;
--webkit-appearance: none;
-}
-.copy-btn:active { opacity: 0.6; }
-
-.memo-btn {
-background: var(–surface); border: 2px solid var(–accent);
-border-radius: var(–radius); height: 54px; color: var(–accent);
-font-size: 15px; font-weight: 600; cursor: pointer;
-display: flex; align-items: center; justify-content: center;
-gap: 8px; width: 100%; transition: background 0.12s; -webkit-appearance: none;
-}
-.memo-btn:active { background: #f0f4ff; }
-
-/* ── Toast ── */
-.toast {
-position: fixed;
-bottom: calc(28px + env(safe-area-inset-bottom));
-left: 50%; transform: translateX(-50%) translateY(20px);
-background: rgba(20,20,20,0.88); color: #fff;
-font-size: 14px; font-weight: 500;
-padding: 10px 22px; border-radius: 100px;
-opacity: 0; transition: opacity 0.2s, transform 0.2s;
-pointer-events: none; white-space: nowrap; z-index: 999;
-backdrop-filter: blur(8px);
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-.fade-in { animation: fadeIn 0.22s ease both; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
-
-.label { font-size: 12px; font-weight: 600; color: var(–text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+.toast{position:fixed;bottom:calc(28px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(20px);background:rgba(20,20,20,.88);color:#fff;font-size:14px;font-weight:500;padding:10px 22px;border-radius:100px;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;white-space:nowrap;z-index:999;backdrop-filter:blur(8px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.fade-in{animation:fadeIn .22s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 </style>
 
 </head>
@@ -242,18 +120,24 @@ backdrop-filter: blur(8px);
 
 <main>
 
-  <!-- ── BIG REC BUTTON ── -->
+  <!-- モード切替 -->
+
+  <div class="mode-tabs">
+    <button class="mode-tab active" id="tab-mm" onclick="setMode('mm')">📏 mm モード</button>
+    <button class="mode-tab" id="tab-sun" onclick="setMode('sun')">📐 寸モード</button>
+  </div>
+
+  <!-- 録音ボタン -->
 
   <div class="rec-wrap">
     <button class="rec-btn idle" id="recBtn" onclick="toggleRec()">
-      <span class="rec-icon" id="recIcon">🎤</span>
+      <span id="recIcon">🎤</span>
       <span id="recLabel">録音開始</span>
     </button>
-    <!-- 認識中テキスト -->
     <div class="interim-box" id="interimBox">認識中…</div>
   </div>
 
-  <!-- ── オプション ── -->
+  <!-- オプション -->
 
   <div class="option-row" onclick="toggleOption('addZero')">
     <div class="option-icon">➕</div>
@@ -264,7 +148,7 @@ backdrop-filter: blur(8px);
     <div class="toggle" id="toggle-addZero"></div>
   </div>
 
-  <!-- ── 手入力（折りたたみ） ── -->
+  <!-- 手入力 -->
 
   <div>
     <button class="manual-toggle" onclick="toggleManual()">
@@ -272,40 +156,54 @@ backdrop-filter: blur(8px);
     </button>
     <div class="manual-area" id="manualArea">
       <textarea id="inputText"
-        placeholder="例: 0 455 910 1365&#10;210かける2　でも OK"
+        placeholder="mmモード: 0 455 910 1365&#10;寸モード: 1寸3分 2寸 3寸5分"
         inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false"
       ></textarea>
       <button class="calc-btn" onclick="processManual()">✅ この内容で計算する</button>
     </div>
   </div>
 
-  <!-- ── エラー ── -->
+  <!-- エラー -->
 
   <div id="errorBox" style="display:none"></div>
 
-  <!-- ── 結果 ── -->
+  <!-- 結果 -->
 
   <div id="resultSection" class="result-section" style="display:none"></div>
 
 </main>
-
 <div class="toast" id="toast"></div>
 
 <script>
 // ══════════════════════════════════════
+//  定数
+// ══════════════════════════════════════
+const SUN_TO_MM = 30.303;  // 1寸 = 30.303mm
+
+// ══════════════════════════════════════
 //  State
 // ══════════════════════════════════════
+let currentMode = 'mm'; // 'mm' | 'sun'
 const state = { addZero: false };
 let recognition = null;
 let isListening  = false;
 let manualOpen   = false;
-let lastRaw      = '';
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('tab-mm').classList.toggle('active', mode === 'mm');
+  document.getElementById('tab-sun').classList.toggle('active', mode === 'sun');
+  clearResult(); hideError();
+  document.getElementById('inputText').placeholder =
+    mode === 'mm'
+      ? 'mmモード: 0 455 910 1365\n大工言葉: ニヒャクトー サンビャクトー'
+      : '寸モード: 1寸3分 2寸 3寸5分\n音声: イッスンサンブ など';
+}
 
 function toggleOption(key) {
   state[key] = !state[key];
   document.getElementById('toggle-' + key).classList.toggle('on', state[key]);
 }
-
 function toggleManual() {
   manualOpen = !manualOpen;
   document.getElementById('manualArea').classList.toggle('open', manualOpen);
@@ -313,56 +211,456 @@ function toggleManual() {
 }
 
 // ══════════════════════════════════════
-//  数値抽出
+//  大工言葉 → 数値変換
 // ══════════════════════════════════════
-function extractIntegers(input) {
+
+// カタカナへの正規化
+function toKatakana(str) {
+  return str.replace(/[\u3041-\u3096]/g, c => String.fromCharCode(c.charCodeAt(0) + 0x60));
+}
+
+// 音声認識テキストから数値を読み取る（大工言葉対応）
+function parseJapaneseNumber(token) {
+  // 漢数字・アラビア数字が混在する場合はそのまま返す
+  const direct = parseInt(token.replace(/[,、，\s]/g, ''));
+  if (!isNaN(direct)) return direct;
+
+  const s = toKatakana(token);
+
+  // 1桁読み（ヨンゴーゴ → 455 のようなパターン）
+  // まずヒャク・セン・トーを含む構造的な読みを試みる
+  const structured = parseStructuredNumber(s);
+  if (structured !== null) return structured;
+
+  // 1桁連続読み（ヨンゴーゴ）
+  const sequential = parseSequentialDigits(s);
+  if (sequential !== null) return sequential;
+
+  return null;
+}
+
+// 構造的な数（ニヒャクトー → 210）
+function parseStructuredNumber(s) {
+  // トークンを位ごとに分解
+  // パターン: [数][千][数][百][数][十][数]
+
+  const DIGIT_MAP = {
+    'ゼロ':0,'レイ':0,
+    'イッ':1,'イチ':1,
+    'ニ':2,
+    'サン':3,
+    'シ':4,'ヨン':4,'ヨ':4,
+    'ゴ':5,
+    'ロッ':6,'ロク':6,
+    'シチ':7,'ナナ':7,
+    'ハッ':8,'ハチ':8,
+    'キュ':9,'キュウ':9,'ク':9,
+  };
+  const SEN   = ['イッセン','イッゼン','セン','ゼン'];
+  const HYAKU = ['ロッピャク','ハッピャク','サンビャク','ニヒャク','ヨンヒャク','ゴヒャク','ナナヒャク','ヒャク','ビャク','ピャク'];
+  const JU    = ['ジュウ','ジュ','トー','トウ'];
+
+  let result = 0;
+  let rest = s;
+
+  // 千の位
+  for (const w of SEN) {
+    const idx = rest.indexOf(w);
+    if (idx !== -1) {
+      const pre = rest.slice(0, idx);
+      const d = pre ? (DIGIT_MAP[pre] ?? null) : 1;
+      if (d !== null) { result += d * 1000; rest = rest.slice(idx + w.length); break; }
+    }
+  }
+
+  // 百の位
+  for (const w of HYAKU) {
+    const idx = rest.indexOf(w);
+    if (idx !== -1) {
+      const pre = rest.slice(0, idx);
+      let d = 1;
+      if (pre) {
+        // ニヒャク等はwに含まれているが、残りの前部分が数字のこともある
+        d = DIGIT_MAP[pre] ?? 1;
+      }
+      // ヒャク系のワードに数字プレフィックスが含まれているものを処理
+      const prefixedHyaku = {
+        'ロッピャク':600,'ハッピャク':800,'サンビャク':300,
+        'ニヒャク':200,'ヨンヒャク':400,'ゴヒャク':500,'ナナヒャク':700
+      };
+      if (prefixedHyaku[w] !== undefined) {
+        result += prefixedHyaku[w];
+      } else {
+        result += d * 100;
+      }
+      rest = rest.slice(idx + w.length);
+      break;
+    }
+  }
+
+  // 十の位
+  for (const w of JU) {
+    const idx = rest.indexOf(w);
+    if (idx !== -1) {
+      const pre = rest.slice(0, idx);
+      const d = pre ? (DIGIT_MAP[pre] ?? null) : 1;
+      if (d !== null) { result += d * 10; rest = rest.slice(idx + w.length); break; }
+    }
+  }
+
+  // 1の位（残り）
+  if (rest) {
+    const d = DIGIT_MAP[rest] ?? null;
+    if (d !== null) result += d;
+    else if (rest.length > 0) {
+      // 構造解析失敗
+      if (result === 0) return null;
+    }
+  }
+
+  return result > 0 ? result : null;
+}
+
+// 1桁連続読み（ヨンゴーゴ → 455）
+function parseSequentialDigits(s) {
+  const DIGIT_SEQ = [
+    ['キュウ',9],['キュ',9],
+    ['イチ',1],['イッ',1],
+    ['ニ',2],
+    ['サン',3],
+    ['ヨン',4],['ヨ',4],['シ',4],
+    ['ゴー',5],['ゴ',5],
+    ['ロク',6],['ロッ',6],
+    ['ナナ',7],['シチ',7],
+    ['ハチ',8],['ハッ',8],
+    ['ゼロ',0],['レイ',0],
+    ['ク',9],
+  ];
+
+  let rest = s;
+  let digits = [];
+  let safety = 0;
+  while (rest.length > 0 && safety < 20) {
+    safety++;
+    let matched = false;
+    for (const [w, d] of DIGIT_SEQ) {
+      if (rest.startsWith(w)) {
+        digits.push(d);
+        rest = rest.slice(w.length);
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) break;
+  }
+  if (digits.length >= 2 && rest.length === 0) {
+    return parseInt(digits.join(''));
+  }
+  return null;
+}
+
+// ══════════════════════════════════════
+//  mm モード：入力から数値抽出
+// ══════════════════════════════════════
+function extractMM(input) {
+  // 全角→半角
   let s = input.replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
   const results = [];
+
+  // 「Nかける M」展開
   s = s.replace(/(\d+)\s*(?:かける|×|\*|x|X)\s*(\d+)/g, (_, num, cnt) => {
     const n = parseInt(num), c = Math.min(parseInt(cnt), 99);
     for (let i = 0; i < c; i++) results.push(n);
     return ' ';
   });
-  const rest = s.match(/-?\d+/g);
-  if (rest) rest.forEach(v => results.push(parseInt(v)));
+
+  // アラビア数字
+  const arabicNums = s.match(/-?\d+/g);
+  if (arabicNums) arabicNums.forEach(v => results.push(parseInt(v)));
+
+  // 大工言葉（カタカナ部分を抽出して変換）
+  const kanaTokens = s.match(/[ァ-ヶーあ-ん]+/g) || [];
+  for (const tok of kanaTokens) {
+    const n = parseJapaneseNumber(tok);
+    if (n !== null) results.push(n);
+  }
+
   return results;
 }
 
+// ══════════════════════════════════════
+//  寸モード：入力から寸法抽出
+//  戻り値: [{sun: 1.3, mm: 39.39, label: '1寸3分'}, ...]
+// ══════════════════════════════════════
+function extractSun(input) {
+  const results = [];
+
+  // テキスト正規化
+  let s = input
+    .replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+    .replace(/[一二三四五六七八九〇]/g, c => '〇一二三四五六七八九'.indexOf(c))
+    .replace(/[　]/g, ' ');
+
+  // パターン1: 数字+寸+数字+分+数字+厘（例: 1寸3分2厘）
+  const sunPattern = /(\d+(?:\.\d+)?)\s*寸\s*(?:(\d+(?:\.\d+)?)\s*分\s*(?:(\d+(?:\.\d+)?)\s*厘)?)?/g;
+  let m;
+  while ((m = sunPattern.exec(s)) !== null) {
+    const sunVal  = parseFloat(m[1]) || 0;
+    const buVal   = parseFloat(m[2]) || 0;
+    const rinVal  = parseFloat(m[3]) || 0;
+    const total   = sunVal + buVal * 0.1 + rinVal * 0.01;
+    const mm      = Math.round(total * SUN_TO_MM * 100) / 100;
+    const label   = formatSunLabel(sunVal, buVal, rinVal);
+    results.push({ sun: total, mm, label });
+  }
+
+  // パターン2: 数字+分のみ（寸なし）
+  const buOnlyPattern = /(?<![寸\d])(\d+(?:\.\d+)?)\s*分(?!\s*\d*\s*厘)/g;
+  while ((m = buOnlyPattern.exec(s)) !== null) {
+    const buVal = parseFloat(m[1]);
+    const total = buVal * 0.1;
+    const mm    = Math.round(total * SUN_TO_MM * 100) / 100;
+    results.push({ sun: total, mm, label: `${m[1]}分` });
+  }
+
+  // 音声（カタカナ）からの寸法読み取り
+  const kanaResults = parseSunFromKana(s);
+  results.push(...kanaResults);
+
+  return results;
+}
+
+function parseSunFromKana(s) {
+  const results = [];
+  const kata = toKatakana(s);
+
+  // イッスンサンブ → 1寸3分
+  // パターン: [数]スン[数]ブ[数]リン
+  const SUN_WORDS  = ['イッスン','ニスン','サンスン','ヨンスン','ゴスン','ロクスン','ナナスン','ハッスン','キュウスン','ジュッスン','スン'];
+  const BU_WORDS   = ['イチブ','ニブ','サンブ','シブ','ヨンブ','ゴブ','ロクブ','ナナブ','ハチブ','キュウブ','ブ'];
+  const RIN_WORDS  = ['イチリン','ニリン','サンリン','シリン','ゴリン','ロクリン','ナナリン','ハチリン','キュウリン','リン'];
+
+  const SUN_VAL = {'イッスン':1,'ニスン':2,'サンスン':3,'ヨンスン':4,'ゴスン':5,'ロクスン':6,'ナナスン':7,'ハッスン':8,'キュウスン':9,'ジュッスン':10,'スン':1};
+  const BU_VAL  = {'イチブ':1,'ニブ':2,'サンブ':3,'シブ':4,'ヨンブ':4,'ゴブ':5,'ロクブ':6,'ナナブ':7,'ハチブ':8,'キュウブ':9,'ブ':1};
+  const RIN_VAL = {'イチリン':1,'ニリン':2,'サンリン':3,'シリン':4,'ゴリン':5,'ロクリン':6,'ナナリン':7,'ハチリン':8,'キュウリン':9,'リン':1};
+
+  let rest = kata;
+  while (rest.length > 0) {
+    let matched = false;
+    for (const sw of SUN_WORDS) {
+      if (rest.includes(sw)) {
+        const idx = rest.indexOf(sw);
+        rest = rest.slice(idx + sw.length);
+        let sunN = SUN_VAL[sw] || 1;
+        let buN = 0, rinN = 0;
+        for (const bw of BU_WORDS) {
+          if (rest.startsWith(bw)) { buN = BU_VAL[bw]||1; rest = rest.slice(bw.length); break; }
+        }
+        for (const rw of RIN_WORDS) {
+          if (rest.startsWith(rw)) { rinN = RIN_VAL[rw]||1; rest = rest.slice(rw.length); break; }
+        }
+        const total = sunN + buN * 0.1 + rinN * 0.01;
+        const mm    = Math.round(total * SUN_TO_MM * 100) / 100;
+        const label = formatSunLabel(sunN, buN, rinN);
+        results.push({ sun: total, mm, label });
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) break;
+  }
+  return results;
+}
+
+function formatSunLabel(sun, bu, rin) {
+  let s = '';
+  if (sun) s += `${sun}寸`;
+  if (bu)  s += `${bu}分`;
+  if (rin) s += `${rin}厘`;
+  return s || '0';
+}
+
+// ══════════════════════════════════════
+//  共通：グループ化・差分
+// ══════════════════════════════════════
 function groupSorted(sorted) {
   const groups = [];
   for (const v of sorted) {
     if (groups.length && groups[groups.length-1].v === v) groups[groups.length-1].c++;
-    else groups.push({ v, c: 1 });
+    else groups.push({ v, c:1 });
   }
   return groups;
 }
-
 function calcDiffs(groups) {
   if (groups.length < 2) return [];
-  return groups.slice(1).map((g, i) => g.v - groups[i].v);
+  return groups.slice(1).map((g, i) => +(g.v - groups[i].v).toFixed(4));
 }
 
 // ══════════════════════════════════════
-//  処理
+//  メイン処理
 // ══════════════════════════════════════
 function process(raw) {
   hideError(); clearResult();
-  lastRaw = raw;
 
-  let nums = extractIntegers(raw);
+  if (currentMode === 'mm') {
+    processMM(raw);
+  } else {
+    processSun(raw);
+  }
+}
+
+function processMM(raw) {
+  let nums = extractMM(raw);
   if (nums.length === 0) { showError('数値が見つかりませんでした。'); return; }
   if (state.addZero && !nums.includes(0)) nums.unshift(0);
 
   const sorted = [...nums].sort((a, b) => a - b);
   const groups = groupSorted(sorted);
   const diffs  = calcDiffs(groups);
-  renderResult({ nums, groups, diffs, raw });
+  renderResultMM({ nums, groups, diffs, raw });
+}
+
+function processSun(raw) {
+  const items = extractSun(raw);
+  if (items.length === 0) { showError('寸法が見つかりませんでした。\n例: 1寸3分 / 2寸'); return; }
+  if (state.addZero) items.unshift({ sun: 0, mm: 0, label: '0' });
+
+  const sorted = [...items].sort((a, b) => a.sun - b.sun);
+  const groups = groupSorted(sorted.map(i => i.sun)).map((g, idx) => ({
+    ...g,
+    item: sorted.find(i => i.sun === g.v)
+  }));
+  const diffs = calcDiffs(groups);
+  renderResultSun({ items, sorted, groups, diffs, raw });
 }
 
 function processManual() {
   const raw = document.getElementById('inputText').value.trim();
   if (!raw) { showError('数値が入力されていません。'); return; }
   process(raw);
+}
+
+// ══════════════════════════════════════
+//  描画：mmモード
+// ══════════════════════════════════════
+function renderResultMM({ nums, groups, diffs, raw }) {
+  const sec = document.getElementById('resultSection');
+  sec.innerHTML = ''; sec.style.display = 'flex';
+
+  sec.appendChild(makeCard('orange', '🔢 抽出された数値', `
+    <div style="font-family:'Courier New',monospace;font-size:17px;line-height:1.8;word-break:break-all">${nums.join('&ensp;')}</div>
+    <div style="font-size:11px;color:var(--text2);margin-top:4px">${nums.length} 件</div>
+  `));
+
+  const tagsHTML = groups.map(g =>
+    `<div class="num-tag">${g.v}${g.c>1?`<span class="times">×${g.c}</span>`:''}</div>`
+  ).join('');
+  const sortedCopy = groups.map(g => g.c>1?`${g.v}×${g.c}`:String(g.v)).join(', ');
+  sec.appendChild(makeCard('blue', '↕️ 昇順並べ替え', `
+    <div class="sorted-list">${tagsHTML}</div>
+    <button class="copy-btn" onclick="copyText(${JSON.stringify(sortedCopy)},'コピーしました')">📋 コピー</button>
+  `));
+
+  let diffBody = '';
+  if (diffs.length === 0) {
+    diffBody = '<div style="color:var(--text2);font-size:14px">（数値が1種類のため差分なし）</div>';
+  } else {
+    const rows = diffs.map((d, i) => {
+      const fl = groups[i].c>1   ? `${groups[i].v}<span class="diff-label">×${groups[i].c}</span>`   : String(groups[i].v);
+      const tl = groups[i+1].c>1 ? `${groups[i+1].v}<span class="diff-label">×${groups[i+1].c}</span>` : String(groups[i+1].v);
+      return `<tr><td class="diff-from">${fl}</td><td class="diff-arrow">→</td><td class="diff-to">${tl}</td><td class="diff-val">+${d}</td></tr>`;
+    }).join('');
+    const diffCopy = diffs.join('\n');
+    diffBody = `<table class="diff-table">${rows}</table>
+      <button class="copy-btn" onclick="copyText(${JSON.stringify(diffCopy)},'差分をコピーしました')">📋 差分をコピー</button>`;
+  }
+  sec.appendChild(makeCard('green', '📏 差分（重複は1件）', diffBody));
+
+  appendMemoBtn(sec, raw, groups, diffs, 'mm');
+  sec.classList.add('fade-in');
+  setTimeout(() => sec.scrollIntoView({ behavior:'smooth', block:'start' }), 80);
+}
+
+// ══════════════════════════════════════
+//  描画：寸モード
+// ══════════════════════════════════════
+function renderResultSun({ items, sorted, groups, diffs, raw }) {
+  const sec = document.getElementById('resultSection');
+  sec.innerHTML = ''; sec.style.display = 'flex';
+
+  // 抽出
+  const extractedHTML = items.map(i =>
+    `<div class="sun-tag"><span class="sun-val">${i.label}</span><span class="mm-val">= ${i.mm} mm</span></div>`
+  ).join('');
+  sec.appendChild(makeCard('orange', '🔢 抽出された寸法', `<div class="sorted-list">${extractedHTML}</div>`));
+
+  // 並べ替え
+  const sortedHTML = sorted.map(i =>
+    `<div class="sun-tag"><span class="sun-val">${i.label}</span><span class="mm-val">= ${i.mm} mm</span></div>`
+  ).join('');
+  const sortedCopy = sorted.map(i => `${i.label}(${i.mm}mm)`).join(', ');
+  sec.appendChild(makeCard('purple', '↕️ 昇順並べ替え', `
+    <div class="sorted-list">${sortedHTML}</div>
+    <button class="copy-btn" onclick="copyText(${JSON.stringify(sortedCopy)},'コピーしました')">📋 コピー</button>
+  `));
+
+  // 差分
+  let diffBody = '';
+  if (diffs.length === 0) {
+    diffBody = '<div style="color:var(--text2);font-size:14px">（1種類のため差分なし）</div>';
+  } else {
+    const rows = diffs.map((d, i) => {
+      const fromItem = sorted.find(x => x.sun === groups[i].v);
+      const toItem   = sorted.find(x => x.sun === groups[i+1].v);
+      const fromLbl  = fromItem ? fromItem.label : String(groups[i].v);
+      const toLbl    = toItem   ? toItem.label   : String(groups[i+1].v);
+      const dMM      = +(d * SUN_TO_MM).toFixed(2);
+      return `<tr>
+        <td class="diff-from" style="font-size:13px">${fromLbl}</td>
+        <td class="diff-arrow">→</td>
+        <td class="diff-to" style="font-size:13px">${toLbl}</td>
+        <td class="diff-val" style="font-size:12px">+${dMM}<br><span style="font-size:10px;color:var(--text2)">(${d}寸)</span></td>
+      </tr>`;
+    }).join('');
+    const diffCopy = diffs.map((d, i) => {
+      const dMM = +(d * SUN_TO_MM).toFixed(2);
+      return `${dMM}mm (${d}寸)`;
+    }).join('\n');
+    diffBody = `<table class="diff-table">${rows}</table>
+      <button class="copy-btn" onclick="copyText(${JSON.stringify(diffCopy)},'差分をコピーしました')">📋 差分をコピー</button>`;
+  }
+  sec.appendChild(makeCard('green', '📏 差分', diffBody));
+
+  appendMemoBtn(sec, raw, groups, diffs, 'sun', sorted);
+  sec.classList.add('fade-in');
+  setTimeout(() => sec.scrollIntoView({ behavior:'smooth', block:'start' }), 80);
+}
+
+function appendMemoBtn(sec, raw, groups, diffs, mode, sorted) {
+  const btn = document.createElement('button');
+  btn.className = 'memo-btn fade-in';
+  btn.innerHTML = '📄 メモ形式でまとめてコピー';
+  btn.onclick = () => {
+    const now = new Date().toLocaleString('ja-JP', { dateStyle:'short', timeStyle:'short' });
+    let sortedStr, diffStr;
+    if (mode === 'sun') {
+      sortedStr = (sorted||[]).map(i => `${i.label}(${i.mm}mm)`).join(', ');
+      diffStr = diffs.length === 0 ? '（1種類のみ）' : diffs.map(d => `${+(d*SUN_TO_MM).toFixed(2)}mm`).join('\n');
+    } else {
+      sortedStr = groups.map(g => g.c>1?`${g.v}×${g.c}`:String(g.v)).join(', ');
+      diffStr = diffs.length === 0 ? '（1種類のみ）' : diffs.join('\n');
+    }
+    const memo = [`【カットリスト】${now}`,'','■ 入力',raw,'','■ 並べ替え',sortedStr,'','■ 差分',diffStr].join('\n');
+    copyText(memo, 'メモをコピーしました ✓');
+  };
+  sec.appendChild(btn);
+}
+
+function makeCard(cls, title, body) {
+  const d = document.createElement('div');
+  d.className = 'card fade-in';
+  d.innerHTML = `<div class="card-header ${cls}">${title}</div><div class="card-body">${body}</div>`;
+  return d;
 }
 
 // ══════════════════════════════════════
@@ -383,10 +681,7 @@ function startRec() {
   recognition.continuous = false;
   recognition.interimResults = true;
 
-  recognition.onstart = () => {
-    isListening = true;
-    setRecState('listening');
-  };
+  recognition.onstart = () => { isListening = true; setRecState('listening'); };
 
   recognition.onresult = (e) => {
     let interim = '', final = '';
@@ -395,12 +690,10 @@ function startRec() {
       if (e.results[i].isFinal) final += t;
       else interim += t;
     }
-    // 途中経過表示
     const box = document.getElementById('interimBox');
     box.textContent = interim || final || '認識中…';
     box.classList.add('active');
 
-    // 確定したら自動計算
     if (final) {
       document.getElementById('inputText').value = final;
       box.textContent = '「' + final + '」✓';
@@ -412,104 +705,26 @@ function startRec() {
     }
   };
 
-  recognition.onerror = (e) => {
-    if (e.error !== 'no-speech') showToast('エラー: ' + e.error);
-    stopRec();
-  };
-  recognition.onend = () => {
-    if (isListening) stopRec();
-  };
-
+  recognition.onerror = (e) => { if (e.error !== 'no-speech') showToast('エラー: ' + e.error); stopRec(); };
+  recognition.onend   = () => { if (isListening) stopRec(); };
   recognition.start();
 }
 
 function stopRec() {
   isListening = false;
   try { recognition && recognition.stop(); } catch(e){}
-  // doneでなければidleに戻す
   const btn = document.getElementById('recBtn');
   if (!btn.classList.contains('done')) setRecState('idle');
 }
 
 function setRecState(s) {
-  const btn   = document.getElementById('recBtn');
-  const icon  = document.getElementById('recIcon');
+  const btn = document.getElementById('recBtn');
+  const icon = document.getElementById('recIcon');
   const label = document.getElementById('recLabel');
   btn.className = 'rec-btn ' + s;
-  if (s === 'idle') {
-    icon.textContent  = '🎤';
-    label.textContent = '録音開始';
-  } else if (s === 'listening') {
-    icon.textContent  = '⏹';
-    label.textContent = '録音中… タップで停止';
-  } else if (s === 'done') {
-    icon.textContent  = '🎤';
-    label.textContent = 'もう一度録音';
-    isListening = false;
-  }
-}
-
-// ══════════════════════════════════════
-//  描画
-// ══════════════════════════════════════
-function renderResult({ nums, groups, diffs, raw }) {
-  const sec = document.getElementById('resultSection');
-  sec.innerHTML = ''; sec.style.display = 'flex';
-
-  // 抽出
-  sec.appendChild(makeCard('orange', '🔢 抽出された数値', `
-    <div style="font-family:'Courier New',monospace;font-size:17px;line-height:1.8;word-break:break-all">${nums.join('&ensp;')}</div>
-    <div style="font-size:11px;color:var(--text2);margin-top:4px">${nums.length} 件</div>
-  `));
-
-  // 並べ替え
-  const tagsHTML = groups.map(g =>
-    `<div class="num-tag">${g.v}${g.c > 1 ? `<span class="times">×${g.c}</span>` : ''}</div>`
-  ).join('');
-  const sortedCopy = groups.map(g => g.c > 1 ? `${g.v}×${g.c}` : String(g.v)).join(', ');
-  sec.appendChild(makeCard('blue', '↕️ 昇順並べ替え', `
-    <div class="sorted-list">${tagsHTML}</div>
-    <button class="copy-btn" onclick="copyText(${JSON.stringify(sortedCopy)},'コピーしました')">📋 コピー</button>
-  `));
-
-  // 差分
-  let diffBody = '';
-  if (diffs.length === 0) {
-    diffBody = '<div style="color:var(--text2);font-size:14px">（数値が1種類のため差分なし）</div>';
-  } else {
-    const rows = diffs.map((d, i) => {
-      const fl = groups[i].c   > 1 ? `${groups[i].v}<span class="diff-label">×${groups[i].c}</span>`   : String(groups[i].v);
-      const tl = groups[i+1].c > 1 ? `${groups[i+1].v}<span class="diff-label">×${groups[i+1].c}</span>` : String(groups[i+1].v);
-      return `<tr><td class="diff-from">${fl}</td><td class="diff-arrow">→</td><td class="diff-to">${tl}</td><td class="diff-val">+${d}</td></tr>`;
-    }).join('');
-    const diffCopy = diffs.join('\n');
-    diffBody = `<table class="diff-table">${rows}</table>
-      <button class="copy-btn" onclick="copyText(${JSON.stringify(diffCopy)},'差分をコピーしました')">📋 差分をコピー</button>`;
-  }
-  sec.appendChild(makeCard('green', '📏 差分（重複は1件）', diffBody));
-
-  // メモ
-  const memoBtn = document.createElement('button');
-  memoBtn.className = 'memo-btn fade-in';
-  memoBtn.innerHTML = '📄 メモ形式でまとめてコピー';
-  memoBtn.onclick = () => {
-    const now = new Date().toLocaleString('ja-JP', { dateStyle:'short', timeStyle:'short' });
-    const sortedStr = groups.map(g => g.c > 1 ? `${g.v}×${g.c}` : String(g.v)).join(', ');
-    const diffStr   = diffs.length === 0 ? '（1種類のみ）' : diffs.join('\n');
-    const memo = [`【カットリスト】${now}`,'','■ 入力',raw,'','■ 並べ替え',sortedStr,'','■ 差分',diffStr].join('\n');
-    copyText(memo, 'メモをコピーしました ✓');
-  };
-  sec.appendChild(memoBtn);
-
-  sec.classList.add('fade-in');
-  setTimeout(() => sec.scrollIntoView({ behavior:'smooth', block:'start' }), 80);
-}
-
-function makeCard(cls, title, body) {
-  const d = document.createElement('div');
-  d.className = 'card fade-in';
-  d.innerHTML = `<div class="card-header ${cls}">${title}</div><div class="card-body">${body}</div>`;
-  return d;
+  if (s === 'idle')      { icon.textContent = '🎤'; label.textContent = '録音開始'; }
+  else if (s === 'listening') { icon.textContent = '⏹'; label.textContent = '録音中… タップで停止'; }
+  else if (s === 'done') { icon.textContent = '🎤'; label.textContent = 'もう一度録音'; isListening = false; }
 }
 
 // ══════════════════════════════════════
@@ -522,22 +737,16 @@ function showError(msg) {
 }
 function hideError()   { document.getElementById('errorBox').style.display = 'none'; }
 function clearResult() { const s = document.getElementById('resultSection'); s.innerHTML=''; s.style.display='none'; }
-
-function resetAll() {
-  document.getElementById('inputText').value = '';
-  document.getElementById('interimBox').classList.remove('active');
-  hideError(); clearResult(); stopRec(); setRecState('idle');
-  showToast('リセットしました');
-}
+function resetAll()    { document.getElementById('inputText').value=''; document.getElementById('interimBox').classList.remove('active'); hideError(); clearResult(); stopRec(); setRecState('idle'); showToast('リセットしました'); }
 
 function copyText(text, msg) {
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(() => showToast(msg || 'コピーしました ✓'));
+    navigator.clipboard.writeText(text).then(() => showToast(msg||'コピーしました ✓'));
   } else {
     const el = document.createElement('textarea');
     el.value = text; el.style.cssText = 'position:fixed;opacity:0';
     document.body.appendChild(el); el.select(); document.execCommand('copy');
-    document.body.removeChild(el); showToast(msg || 'コピーしました ✓');
+    document.body.removeChild(el); showToast(msg||'コピーしました ✓');
   }
 }
 
@@ -546,7 +755,7 @@ function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
 }
 
 document.getElementById('inputText').addEventListener('keydown', e => {
