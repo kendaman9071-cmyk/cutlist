@@ -31,22 +31,29 @@ header{background:var(–surface);border-bottom:1px solid var(–border);padding
 
 main{padding:14px 14px 0;display:flex;flex-direction:column;gap:12px;max-width:600px;margin:0 auto}
 
-.mode-tabs{display:flex;gap:5px;background:var(–surface);border:1px solid var(–border);border-radius:10px;padding:4px}
-.mode-tab{flex:1;height:38px;border:none;border-radius:7px;background:transparent;font-size:12px;font-weight:600;color:var(–text2);cursor:pointer;transition:all .18s;-webkit-appearance:none}
-.mode-tab.active{background:var(–surface3);color:var(–accent);box-shadow:0 1px 4px rgba(0,0,0,.4)}
-.mode-tab:active{opacity:.7}
-
-.rec-wrap{display:flex;flex-direction:column;gap:10px}
-.rec-btn{width:100%;height:88px;border:none;border-radius:14px;font-family:var(–sans);font-size:24px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:transform .12s,opacity .12s;-webkit-appearance:none;position:relative;overflow:hidden}
-.rec-btn::before{content:’’;position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.06),transparent 60%);pointer-events:none}
-.rec-btn.idle{background:linear-gradient(135deg,#c0000a,#ff3b30);color:#fff;box-shadow:0 4px 20px rgba(255,59,48,.35)}
+/* 録音ボタン */
+.rec-btn{width:100%;height:96px;border:none;border-radius:16px;font-family:var(–sans);font-size:26px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:transform .12s;-webkit-appearance:none;position:relative;overflow:hidden}
+.rec-btn::before{content:’’;position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.07),transparent 60%);pointer-events:none}
+.rec-btn.idle{background:linear-gradient(135deg,#c0000a,#ff3b30);color:#fff;box-shadow:0 4px 24px rgba(255,59,48,.4)}
 .rec-btn.listening{background:linear-gradient(135deg,#8b0000,#cc0000);color:#fff;animation:recPulse 1.2s infinite}
+.rec-btn.accumulating{background:linear-gradient(135deg,#004d70,#007aaa);color:#fff;box-shadow:0 4px 20px rgba(0,122,170,.4);animation:accPulse 2s infinite}
 .rec-btn.done{background:linear-gradient(135deg,#0070aa,#00c2ff);color:#fff;box-shadow:0 4px 20px rgba(0,194,255,.3)}
 .rec-btn:active{transform:scale(.97)}
 @keyframes recPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.012)}}
+@keyframes accPulse{0%,100%{box-shadow:0 4px 20px rgba(0,122,170,.4)}50%{box-shadow:0 4px 36px rgba(0,194,255,.6)}}
+
+/* 山計バッジ */
+.acc-badge{display:none;background:var(–surface);border:1px solid var(–accent);border-radius:var(–radius-sm);padding:10px 14px}
+.acc-badge.show{display:block}
+.acc-title{font-size:11px;color:var(–accent);font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.acc-nums{font-family:var(–mono);font-size:15px;color:var(–text);margin-top:5px;word-break:break-all;line-height:1.9;min-height:24px}
+.acc-hint{font-size:11px;color:var(–text3);margin-top:5px}
+
 .interim-box{background:var(–surface);border:1px solid var(–rec);border-radius:var(–radius-sm);padding:10px 14px;font-size:15px;color:var(–text2);min-height:42px;display:none;line-height:1.5}
 .interim-box.active{display:block}
 
+/* オプション */
+.options-group{display:flex;flex-direction:column;gap:8px}
 .option-row{background:var(–surface);border:1px solid var(–border);border-radius:var(–radius-sm);padding:11px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;-webkit-user-select:none;user-select:none;transition:background .15s}
 .option-row:active{background:var(–surface2)}
 .option-icon{font-size:17px;width:26px;text-align:center}
@@ -58,6 +65,7 @@ main{padding:14px 14px 0;display:flex;flex-direction:column;gap:12px;max-width:6
 .toggle.on{background:var(–accent);border-color:var(–accent)}
 .toggle.on::after{transform:translateX(20px);background:#fff}
 
+/* 手入力 */
 .manual-toggle{background:none;border:none;color:var(–text3);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;padding:2px 0;-webkit-appearance:none}
 .manual-area{display:none;flex-direction:column;gap:8px}
 .manual-area.open{display:flex}
@@ -67,15 +75,9 @@ textarea::placeholder{color:var(–text3);font-size:13px;font-family:‘Hiragino
 .calc-btn{background:var(–surface2);color:var(–accent);border:1px solid var(–accent);border-radius:var(–radius);height:52px;font-size:16px;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s;-webkit-appearance:none}
 .calc-btn:active{background:var(–surface3)}
 
-.inch-hint{background:var(–surface);border:1px solid var(–border);border-radius:var(–radius-sm);padding:10px 14px;display:none}
-.inch-hint.show{display:block}
-.inch-hint-title{font-size:11px;font-weight:700;color:var(–text3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
-.inch-hint-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
-.inch-ex{font-size:12px;color:var(–text2);font-family:var(–mono)}
-.inch-ex span{color:var(–text3)}
+.error-box{background:#2a1515;border:1px solid #5a2020;border-radius:var(–radius-sm);padding:12px 14px;font-size:14px;color:#ff8080;display:flex;gap:8px}
 
-.error-box{background:#2a1515;border:1px solid #5a2020;border-radius:var(–radius-sm);padding:12px 14px;font-size:14px;color:#ff8080;display:flex;gap:8px;align-items:flex-start}
-
+/* 結果 */
 .result-section{display:flex;flex-direction:column;gap:10px}
 .card{background:var(–surface);border:1px solid var(–border);border-radius:var(–radius);overflow:hidden}
 .card-header{padding:8px 14px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(–border)}
@@ -86,72 +88,58 @@ textarea::placeholder{color:var(–text3);font-size:13px;font-family:‘Hiragino
 .card-header.yellow{background:#1f1a08;color:var(–yellow)}
 .card-body{padding:13px 14px}
 
-/* ══ カウントダウンチェック行 ══ */
+/* 並び替えタブ */
+.sort-tabs{display:flex;gap:5px;margin-bottom:10px}
+.sort-tab{flex:1;height:32px;border:1px solid var(–border);border-radius:6px;background:var(–surface2);font-size:11px;font-weight:600;color:var(–text2);cursor:pointer;transition:all .15s;-webkit-appearance:none}
+.sort-tab.active{border-color:var(–accent);color:var(–accent);background:rgba(0,194,255,.08)}
+.sort-tab:active{opacity:.7}
+
+/* 🔥 炎ゲージ */
+.fire-gauge-wrap{margin-bottom:10px}
+.fire-gauge-bg{height:8px;background:var(–surface3);border-radius:4px;position:relative}
+.fire-gauge-bar{height:100%;border-radius:4px;transition:width .4s cubic-bezier(.34,1.56,.64,1);background:linear-gradient(90deg,#ff6b00,#ff3b30,#ffcc00);box-shadow:0 0 8px rgba(255,107,0,.4);position:relative;min-width:0}
+.fire-gauge-bar::after{content:‘🔥’;position:absolute;right:-10px;top:-8px;font-size:18px;display:none;transform-origin:center bottom}
+.fire-gauge-bar.has-progress::after{display:block}
+.fire-gauge-bar.full::after{animation:fireShake .15s infinite alternate}
+@keyframes fireShake{from{transform:rotate(-5deg) scale(1.2)}to{transform:rotate(5deg) scale(1.3)}}
+.fire-progress-text{font-size:11px;color:var(–text3);text-align:right;margin-top:4px;letter-spacing:.3px}
+
+/* 🔥 満タンオーバーレイ */
+.fire-overlay{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0);pointer-events:none;transition:background .3s}
+.fire-overlay.show{pointer-events:all;background:rgba(0,0,0,.78)}
+.fire-emoji{font-size:90px;opacity:0;transform:scale(.3);transition:opacity .3s,transform .4s cubic-bezier(.34,1.56,.64,1);filter:drop-shadow(0 0 40px #ff6b00)}
+.fire-overlay.show .fire-emoji{opacity:1;transform:scale(1)}
+.fire-msg{font-family:var(–sans);font-size:30px;font-weight:800;color:#fff;text-shadow:0 0 24px #ff6b00;margin-top:12px;opacity:0;transform:translateY(10px);transition:opacity .3s .2s,transform .3s .2s}
+.fire-overlay.show .fire-msg{opacity:1;transform:none}
+.fire-sub{font-size:14px;color:rgba(255,200,100,.8);margin-top:8px;opacity:0;transition:opacity .3s .35s}
+.fire-overlay.show .fire-sub{opacity:1}
+.fire-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.fire-particle{position:absolute;bottom:-20px;animation:riseUp 1.8s ease-out forwards}
+@keyframes riseUp{0%{transform:translateY(0) scale(1) rotate(0deg);opacity:1}100%{transform:translateY(-100vh) scale(.1) rotate(30deg);opacity:0}}
+
+/* チェック行 */
 .check-list{display:flex;flex-direction:column}
-.check-row{
-display:flex;align-items:center;gap:12px;
-padding:11px 0;border-bottom:1px solid var(–border);
--webkit-user-select:none;user-select:none;
-transition:opacity .15s;
-position:relative;
-}
+.check-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(–border);-webkit-user-select:none;user-select:none}
 .check-row:last-child{border-bottom:none}
-
-/* タップ領域（左の数値エリア） */
-.chk-tap{
-flex:1;display:flex;align-items:center;gap:10px;
-cursor:pointer;min-width:0;
-}
+.chk-tap{flex:1;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0}
 .chk-tap:active{opacity:.7}
-
-/* カウントバッジ */
-.chk-badge{
-width:36px;height:36px;border-radius:10px;flex-shrink:0;
-border:2px solid var(–border2);background:var(–surface2);
-display:flex;align-items:center;justify-content:center;
-font-family:var(–mono);font-size:15px;font-weight:700;
-color:var(–accent);transition:all .18s;
-}
-.check-row.done .chk-badge{
-background:var(–surface3);border-color:var(–text3);color:var(–text3);
-}
-
-/* 数値テキスト */
+.chk-badge{width:36px;height:36px;border-radius:10px;flex-shrink:0;border:2px solid var(–border2);background:var(–surface2);display:flex;align-items:center;justify-content:center;font-family:var(–mono);font-size:15px;font-weight:700;color:var(–accent);transition:all .18s}
+.check-row.done .chk-badge{background:var(–surface3);border-color:var(–text3);color:var(–text3)}
 .chk-content{flex:1;min-width:0}
-.chk-num{
-font-family:var(–mono);font-size:20px;font-weight:500;color:var(–text);
-transition:color .18s;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;
-}
+.chk-num{font-family:var(–mono);font-size:20px;font-weight:500;color:var(–text);transition:color .18s;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
 .chk-sub{font-size:11px;color:var(–text3);margin-top:2px;transition:color .18s}
 .check-row.done .chk-num{color:var(–text3);text-decoration:line-through;text-decoration-color:var(–text3)}
 .check-row.done .chk-sub{color:var(–border2)}
+.chk-reset{width:32px;height:32px;border-radius:8px;flex-shrink:0;background:none;border:1px solid var(–border);color:var(–text3);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-appearance:none}
+.chk-reset:active{background:var(–surface3)}
 
-/* 長押しリセットボタン（右端） */
-.chk-reset{
-width:32px;height:32px;border-radius:8px;flex-shrink:0;
-background:none;border:1px solid var(–border);
-color:var(–text3);font-size:13px;cursor:pointer;
-display:flex;align-items:center;justify-content:center;
-transition:background .15s,color .15s;-webkit-appearance:none;
-}
-.chk-reset:active{background:var(–surface3);color:var(–text2)}
-
-/* 差分チェック行 */
+/* 差分行 */
 .diff-check-list{display:flex;flex-direction:column}
-.diff-check-row{
-display:flex;align-items:center;gap:10px;
-padding:9px 0;border-bottom:1px solid var(–border);
--webkit-user-select:none;user-select:none;
-}
+.diff-check-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(–border);-webkit-user-select:none;user-select:none}
 .diff-check-row:last-child{border-bottom:none}
 .diff-tap{flex:1;display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0}
 .diff-tap:active{opacity:.7}
-.diff-chk-box{
-width:26px;height:26px;border-radius:7px;flex-shrink:0;
-border:2px solid var(–border2);background:var(–surface2);
-display:flex;align-items:center;justify-content:center;
-font-size:13px;color:var(–text3);transition:all .18s;
-}
+.diff-chk-box{width:26px;height:26px;border-radius:7px;flex-shrink:0;border:2px solid var(–border2);background:var(–surface2);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(–text3);transition:all .18s}
 .diff-check-row.done .diff-chk-box{background:var(–surface3);border-color:var(–text3)}
 .diff-body{flex:1;display:flex;align-items:center;gap:4px;font-family:var(–mono);font-size:14px;min-width:0}
 .diff-f{color:var(–text2);text-align:right;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -160,29 +148,26 @@ font-size:13px;color:var(–text3);transition:all .18s;
 .diff-v{color:var(–green);font-weight:700;text-align:right;min-width:60px;font-size:13px;flex-shrink:0;line-height:1.4}
 .diff-vsub{font-size:10px;color:var(–text3);display:block}
 .diff-check-row.done .diff-f,.diff-check-row.done .diff-t,.diff-check-row.done .diff-v{color:var(–text3);text-decoration:line-through;text-decoration-color:var(–text3)}
-.diff-check-row.done .diff-vsub{color:var(–border2)}
-.diff-reset{width:28px;height:28px;border-radius:7px;flex-shrink:0;background:none;border:1px solid var(–border);color:var(–text3);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;-webkit-appearance:none}
+.diff-reset{width:28px;height:28px;border-radius:7px;flex-shrink:0;background:none;border:1px solid var(–border);color:var(–text3);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-appearance:none}
 .diff-reset:active{background:var(–surface3)}
 
-/* 進捗 */
-.progress-wrap{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.progress-bar-bg{flex:1;height:4px;background:var(–surface3);border-radius:2px;overflow:hidden}
-.progress-bar{height:100%;background:var(–green);border-radius:2px;transition:width .3s ease}
-.progress-text{font-size:11px;color:var(–text3);min-width:32px;text-align:right;letter-spacing:.3px}
-
 .row-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
-.copy-btn{background:none;border:none;color:var(–accent);font-size:12px;font-weight:600;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px;-webkit-appearance:none;transition:opacity .15s}
+.copy-btn{background:none;border:none;color:var(–accent);font-size:12px;font-weight:600;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px;-webkit-appearance:none}
 .copy-btn:active{opacity:.5}
-.clear-btn{background:none;border:none;color:var(–text3);font-size:11px;cursor:pointer;padding:0;-webkit-appearance:none;transition:color .15s;letter-spacing:.3px}
+.clear-btn{background:none;border:none;color:var(–text3);font-size:11px;cursor:pointer;padding:0;-webkit-appearance:none}
 .clear-btn:active{color:var(–text2)}
 
-.memo-btn{background:var(–surface);border:1px solid var(–border2);border-radius:var(–radius);height:52px;color:var(–text2);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:background .15s,color .15s;-webkit-appearance:none}
+.action-row{display:flex;gap:8px;margin-top:10px}
+.action-btn{flex:1;height:42px;border:1px solid var(–border);border-radius:var(–radius-sm);background:var(–surface2);color:var(–text2);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:background .15s;-webkit-appearance:none}
+.action-btn:active{background:var(–surface3);color:var(–text)}
+.action-btn.speak{border-color:var(–purple);color:var(–purple)}
+
+.memo-btn{background:var(–surface);border:1px solid var(–border2);border-radius:var(–radius);height:52px;color:var(–text2);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:background .15s;-webkit-appearance:none}
 .memo-btn:active{background:var(–surface2);color:var(–text)}
 
-/* ヒント */
-.hint-box{background:var(–surface2);border:1px solid var(–border);border-radius:var(–radius-sm);padding:8px 12px;font-size:11px;color:var(–text3);text-align:center;letter-spacing:.3px}
+.hint-box{background:var(–surface2);border:1px solid var(–border);border-radius:var(–radius-sm);padding:8px 12px;font-size:11px;color:var(–text3);text-align:center;letter-spacing:.3px;margin-top:8px}
 
-.toast{position:fixed;bottom:calc(28px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(16px);background:var(–surface3);border:1px solid var(–border2);color:var(–text);font-size:13px;font-weight:600;padding:9px 20px;border-radius:100px;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;white-space:nowrap;z-index:999;backdrop-filter:blur(12px)}
+.toast{position:fixed;bottom:calc(28px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(16px);background:var(–surface3);border:1px solid var(–border2);color:var(–text);font-size:13px;font-weight:600;padding:9px 20px;border-radius:100px;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;white-space:nowrap;z-index:100;backdrop-filter:blur(12px)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .fade-in{animation:fadeIn .2s ease both}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -190,55 +175,79 @@ font-size:13px;color:var(–text3);transition:all .18s;
 
 </head>
 <body>
+
+<!-- 🔥 炎オーバーレイ -->
+
+<div class="fire-overlay" id="fireOverlay" onclick="closeFireOverlay()">
+  <div class="fire-particles" id="fireParticles"></div>
+  <div class="fire-emoji">🔥</div>
+  <div class="fire-msg">全部完了！</div>
+  <div class="fire-sub">タップで閉じる</div>
+</div>
+
 <header>
   <div class="header-left">
     <div class="header-icon">📐</div>
     <div>
       <div class="header-title">きざみん</div>
-      <div class="header-sub">録音 → 計算 → メモ</div>
+      <div class="header-sub">録音 → 自動判別 → 計算</div>
     </div>
   </div>
   <button class="reset-btn" onclick="resetAll()">↺</button>
 </header>
+
 <main>
-  <div class="mode-tabs">
-    <button class="mode-tab active" id="tab-mm"    onclick="setMode('mm')">📏 mm</button>
-    <button class="mode-tab"        id="tab-shaku" onclick="setMode('shaku')">📐 尺貫法</button>
-    <button class="mode-tab"        id="tab-inch"  onclick="setMode('inch')">🔧 インチ</button>
+  <!-- 録音ボタン -->
+  <button class="rec-btn idle" id="recBtn" onclick="toggleRec()">
+    <span id="recIcon">🎤</span><span id="recLabel">録音開始</span>
+  </button>
+
+  <!-- 山計バッジ -->
+
+  <div class="acc-badge" id="accBadge">
+    <div class="acc-title">🗻 山計モード — 蓄積中</div>
+    <div class="acc-nums" id="accNums">（まだ入力なし）</div>
+    <div class="acc-hint">「ヨシ」で計算 ／ もう一度タップで追加録音</div>
   </div>
-  <div class="rec-wrap">
-    <button class="rec-btn idle" id="recBtn" onclick="toggleRec()">
-      <span id="recIcon">🎤</span><span id="recLabel">録音開始</span>
-    </button>
-    <div class="interim-box" id="interimBox">認識中…</div>
-  </div>
-  <div class="option-row" onclick="toggleOption('addZero')">
-    <div class="option-icon">＋</div>
-    <div class="option-text">
-      <div class="option-title">0を先頭に追加</div>
-      <div class="option-sub">入力に0がない場合に自動追加</div>
+
+  <!-- 認識中テキスト -->
+
+  <div class="interim-box" id="interimBox">認識中…</div>
+
+  <!-- オプション -->
+
+  <div class="options-group">
+    <div class="option-row" onclick="toggleOption('addZero')">
+      <div class="option-icon">＋</div>
+      <div class="option-text">
+        <div class="option-title">0を先頭に追加</div>
+        <div class="option-sub">入力に0がない場合に自動追加</div>
+      </div>
+      <div class="toggle" id="toggle-addZero"></div>
     </div>
-    <div class="toggle" id="toggle-addZero"></div>
+    <div class="option-row" onclick="toggleOption('yamakei')">
+      <div class="option-icon">🗻</div>
+      <div class="option-text">
+        <div class="option-title">山計モード</div>
+        <div class="option-sub">複数回録音してまとめて計算 ／「ヨシ」で確定</div>
+      </div>
+      <div class="toggle" id="toggle-yamakei"></div>
+    </div>
   </div>
+
+  <!-- 手入力 -->
+
   <div>
     <button class="manual-toggle" onclick="toggleManual()">
       <span id="manualArrow">▶</span> 手入力で追加・修正
     </button>
     <div class="manual-area" id="manualArea">
-      <div class="inch-hint" id="inchHint">
-        <div class="inch-hint-title">インチ入力例</div>
-        <div class="inch-hint-grid">
-          <div class="inch-ex">12 <span>→ 12"</span></div>
-          <div class="inch-ex">1/2 <span>→ 1/2"</span></div>
-          <div class="inch-ex">1-3/8 <span>→ 1と3/8"</span></div>
-          <div class="inch-ex">2'6" <span>→ 2ft 6in</span></div>
-        </div>
-      </div>
       <textarea id="inputText" autocomplete="off" autocorrect="off" spellcheck="false"
-        placeholder="例: 455 910カケ3 ニヒャクトー&#10;尺貫法: 1尺3寸 2間&#10;インチ: 12 1/2 1-3/8 2'6&quot;"></textarea>
+        placeholder="例: 455 910カケ3 ニヒャクトー&#10;尺貫法: 1尺3寸 2間 5分&#10;インチ: 12 1/2 1-3/8 2'6&quot;&#10;混在もOK"></textarea>
       <button class="calc-btn" onclick="processManual()">✅ この内容で計算する</button>
     </div>
   </div>
+
   <div id="errorBox" style="display:none"></div>
   <div id="resultSection" class="result-section" style="display:none"></div>
 </main>
@@ -249,31 +258,32 @@ font-size:13px;color:var(–text3);transition:all .18s;
 //  定数
 // ══════════════════════════════════════
 const SUN_MM=30.303,SHAKU_MM=303.03,KEN_MM=1818.18,BU_MM=3.0303,RIN_MM=0.30303,INCH_MM=25.4;
+const YOSHI_WORDS=['ヨシ','よし','ヨーシ','よーし','良し','よし！','ヨシ！'];
 
 // ══════════════════════════════════════
 //  State
 // ══════════════════════════════════════
-let currentMode='mm';
-const state={addZero:false};
+const state={addZero:false,yamakei:false};
 let recognition=null,isListening=false,manualOpen=false;
+let sortedState=[],diffState=[];
+let fireShown=false;
+let lastProcessedData=null;
+// 山計蓄積バッファ
+let accBuffer=[];   // [{type:'mm'|'shaku'|'inch', raw:string, items:[...]}]
+let accRawText=[];  // 表示用生テキスト
 
-// カウントダウン状態
-// sortedState: [{v, origCount, remaining}, ...]
-// diffState:   [{done: bool}, ...]
-let sortedState=[], diffState=[];
-
-function setMode(m){
-  currentMode=m;
-  ['mm','shaku','inch'].forEach(k=>document.getElementById('tab-'+k).classList.toggle('active',k===m));
-  document.getElementById('inchHint').classList.toggle('show',m==='inch'&&manualOpen);
-  clearResult();hideError();
+function toggleOption(k){
+  state[k]=!state[k];
+  document.getElementById('toggle-'+k).classList.toggle('on',state[k]);
+  if(k==='yamakei'){
+    document.getElementById('accBadge').classList.toggle('show',state[k]);
+    if(!state[k]){clearAccBuffer();}
+  }
 }
-function toggleOption(k){state[k]=!state[k];document.getElementById('toggle-'+k).classList.toggle('on',state[k]);}
 function toggleManual(){
   manualOpen=!manualOpen;
   document.getElementById('manualArea').classList.toggle('open',manualOpen);
   document.getElementById('manualArrow').textContent=manualOpen?'▼':'▶';
-  document.getElementById('inchHint').classList.toggle('show',manualOpen&&currentMode==='inch');
 }
 
 // ══════════════════════════════════════
@@ -305,40 +315,46 @@ function parseSequentialDigits(s){
 function parseJapaneseNumber(tok){if(/\d/.test(tok))return null;const s=toKatakana(tok);return parseStructuredNumber(s)??parseSequentialDigits(s);}
 
 // ══════════════════════════════════════
-//  mmモード抽出（カケ/カケル/かけ/かける/×/*  対応）
+//  自動判別：入力文字列から単位を判定
+// ══════════════════════════════════════
+function detectAndExtract(input){
+  // 返り値: {mm:[], shaku:[], inch:[]}
+  const result={mm:[],shaku:[],inch:[]};
+
+  // 尺貫法パターンがあれば優先抽出
+  const shakuItems=extractShaku(input);
+  if(shakuItems.length) result.shaku=shakuItems;
+
+  // インチパターン（分数・ft'in"）があれば抽出
+  const inchItems=extractInch(input);
+  if(inchItems.length) result.inch=inchItems;
+
+  // 残りをmm数値として抽出（尺貫法・インチ記号を除いた部分）
+  let mmStr=input;
+  // 尺貫法・インチ記号を含む部分を除去
+  mmStr=mmStr.replace(/\d+(?:\.\d+)?\s*(?:間|尺|寸|分|厘)/g,'');
+  mmStr=mmStr.replace(/\d+(?:[-\/]\d+(?:\/\d+)?)?\s*[""in]/gi,'');
+  mmStr=mmStr.replace(/\d+(?:\.\d+)?(?:ft|[''`])\s*[\d\-\/]*/gi,'');
+  const mmNums=extractMM(mmStr);
+  if(mmNums.length) result.mm=mmNums;
+
+  return result;
+}
+
+// ══════════════════════════════════════
+//  mm抽出
 // ══════════════════════════════════════
 function extractMM(input){
   let s=input.replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0));
   const results=[];
-
-  // カケル・カケ・かける・かけ・×・* のすべてに対応（数字N カケ M → N を M個）
   s=s.replace(/(\d+)\s*(?:かける|カケル|かけ|カケ|×|\*|x|X)\s*(\d+)/g,(_,n,c)=>{
-    for(let i=0;i<Math.min(parseInt(c),99);i++) results.push(parseInt(n));
-    return ' ';
+    for(let i=0;i<Math.min(parseInt(c),99);i++)results.push(parseInt(n));return' ';
   });
-
-  // 音声認識が「ニヒャクトー」→「200と」に変換するケースの対策
-  // 「Nと数字」→ N+数字（例: 200と10 → 210）
-  s=s.replace(/(\d+)\s*と\s*(\d+)/g,(_,a,b)=>{
-    results.push(parseInt(a)+parseInt(b));
-    return ' ';
-  });
-  // 「Nと」（後ろに数字なし）→ N+10（トー=10）
-  s=s.replace(/(\d+)\s*と(?!\d)/g,(_,a)=>{
-    results.push(parseInt(a)+10);
-    return ' ';
-  });
-
-  // 残りのアラビア数字
+  s=s.replace(/(\d+)\s*と\s*(\d+)/g,(_,a,b)=>{results.push(parseInt(a)+parseInt(b));return' ';});
+  s=s.replace(/(\d+)\s*と(?!\d)/g,(_,a)=>{results.push(parseInt(a)+10);return' ';});
   (s.match(/-?\d+/g)||[]).forEach(v=>results.push(parseInt(v)));
-
-  // 大工言葉（カタカナ部分）
-  (toKatakana(s).match(/[ァ-ヶー]+/g)||[]).forEach(tok=>{
-    const n=parseJapaneseNumber(tok);
-    if(n!==null) results.push(n);
-  });
-
-  return results;
+  (toKatakana(s).match(/[ァ-ヶー]+/g)||[]).forEach(tok=>{const n=parseJapaneseNumber(tok);if(n!==null)results.push(n);});
+  return results.filter(n=>!isNaN(n));
 }
 
 // ══════════════════════════════════════
@@ -378,23 +394,22 @@ function pSK(kata){
 }
 
 // ══════════════════════════════════════
-//  インチパーサー
+//  インチ抽出
 // ══════════════════════════════════════
 function parseFraction(s){
-  const mx=s.match(/^(\d+)[- ](\d+)\/(\d+)$/);
-  if(mx){const den=parseInt(mx[3]);if(!den)return null;return parseInt(mx[1])+parseInt(mx[2])/den;}
-  const fr=s.match(/^(\d+)\/(\d+)$/);
-  if(fr){const den=parseInt(fr[2]);if(!den)return null;return parseInt(fr[1])/den;}
+  const mx=s.match(/^(\d+)[- ](\d+)\/(\d+)$/);if(mx){const den=parseInt(mx[3]);if(!den)return null;return parseInt(mx[1])+parseInt(mx[2])/den;}
+  const fr=s.match(/^(\d+)\/(\d+)$/);if(fr){const den=parseInt(fr[2]);if(!den)return null;return parseInt(fr[1])/den;}
   const n=parseFloat(s);return isNaN(n)?null:n;
 }
 function parseInchToken(tok){
-  const ftIn2=tok.match(/^(\d+(?:\.\d+)?)(?:ft|[''`])\s*(\d+(?:[-\/]\d+(?:\/\d+)?)?)[""in]?$/i);
-  if(ftIn2){const ft=parseFloat(ftIn2[1]),inch=parseFraction(ftIn2[2]);if(inch!==null)return ft*12+inch;}
-  const ftOnly=tok.match(/^(\d+(?:\.\d+)?)(?:ft|[''`])$/i);
-  if(ftOnly)return parseFloat(ftOnly[1])*12;
-  const inOnly=tok.match(/^(.+)[""in]$/i);
-  if(inOnly)return parseFraction(inOnly[1]);
-  return parseFraction(tok);
+  const ftIn=tok.match(/^(\d+(?:\.\d+)?)(?:ft|[''`])\s*(\d+(?:[-\/]\d+(?:\/\d+)?)?)[""in]?$/i);
+  if(ftIn){const ft=parseFloat(ftIn[1]),inch=parseFraction(ftIn[2]);if(inch!==null)return ft*12+inch;}
+  const ftOnly=tok.match(/^(\d+(?:\.\d+)?)(?:ft|[''`])$/i);if(ftOnly)return parseFloat(ftOnly[1])*12;
+  const inOnly=tok.match(/^(.+)[""in]$/i);if(inOnly)return parseFraction(inOnly[1]);
+  // 分数のみ（整数は除外 → mmと区別できないので）
+  const fr=tok.match(/^(\d+)\/(\d+)$/) || tok.match(/^(\d+)[- ](\d+)\/(\d+)$/);
+  if(fr)return parseFraction(tok);
+  return null; // 純粋な整数はmmとして扱う
 }
 function extractInch(input){
   let s=input.replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0));
@@ -407,8 +422,7 @@ function gcd(a,b){return b?gcd(b,a%b):a;}
 function toFractionStr(inch){
   const whole=Math.floor(inch),frac=inch-whole;
   if(frac<0.001)return whole?`${whole}"`:'0"';
-  const dens=[2,4,8,16,32,64];
-  let best=null,bestErr=1;
+  const dens=[2,4,8,16,32,64];let best=null,bestErr=1;
   for(const den of dens){const num=Math.round(frac*den);if(num===0||num===den)continue;const err=Math.abs(frac-num/den);if(err<bestErr){bestErr=err;best={num,den};}}
   if(!best||bestErr>0.01)return`${inch.toFixed(3)}"`;
   const g=gcd(best.num,best.den),num=best.num/g,den=best.den/g;
@@ -417,361 +431,476 @@ function toFractionStr(inch){
 function toFtInStr(inch){
   const ft=Math.floor(inch/12),rem=inch-ft*12;
   const remStr=toFractionStr(rem);
-  if(ft===0)return remStr;
-  if(rem<0.001)return`${ft}'`;
-  return`${ft}'-${remStr}`;
+  if(ft===0)return remStr;if(rem<0.001)return`${ft}'`;return`${ft}'-${remStr}`;
 }
 
 // ══════════════════════════════════════
-//  共通処理
+//  共通
 // ══════════════════════════════════════
-function groupSorted(arr){
-  const g=[];
-  for(const v of arr){if(g.length&&g[g.length-1].v===v)g[g.length-1].c++;else g.push({v,c:1});}
-  return g;
-}
-function calcDiffs(groups){
-  if(groups.length<2)return[];
-  return groups.slice(1).map((g,i)=>+(g.v-groups[i].v).toFixed(4));
-}
-
-function process(raw){hideError();clearResult();
-  if(currentMode==='mm')processMM(raw);
-  else if(currentMode==='shaku')processShaku(raw);
-  else processInch(raw);
-}
-function processMM(raw){
-  let nums=extractMM(raw);
-  if(!nums.length){showError('数値が見つかりませんでした。');return;}
-  if(state.addZero&&!nums.includes(0))nums.unshift(0);
-  const sorted=[...nums].sort((a,b)=>a-b);
-  const groups=groupSorted(sorted),diffs=calcDiffs(groups);
-  sortedState=groups.map(g=>({v:g.v,origCount:g.c,remaining:g.c}));
-  diffState=diffs.map(()=>({done:false}));
-  renderMM({nums,groups,diffs,raw});
-}
-function processShaku(raw){
-  const items=extractShaku(raw);
-  if(!items.length){showError('寸法が見つかりませんでした。');return;}
-  if(state.addZero)items.unshift({mm:0,label:'0',sort_key:0});
-  const sorted=[...items].sort((a,b)=>a.sort_key-b.sort_key);
-  const groups=groupSorted(sorted.map(i=>i.mm)),diffs=calcDiffs(groups);
-  sortedState=sorted.map(i=>({v:i.mm,label:i.label,origCount:1,remaining:1}));
-  diffState=diffs.map(()=>({done:false}));
-  renderShaku({items,sorted,groups,diffs,raw});
-}
-function processInch(raw){
-  let inches=extractInch(raw);
-  if(!inches.length){showError('インチ値が見つかりませんでした。');return;}
-  if(state.addZero&&!inches.includes(0))inches.unshift(0);
-  const sorted=[...inches].sort((a,b)=>a-b);
-  const groups=groupSorted(sorted),diffs=calcDiffs(groups);
-  sortedState=groups.map(g=>({v:g.v,origCount:g.c,remaining:g.c}));
-  diffState=diffs.map(()=>({done:false}));
-  renderInch({inches,groups,diffs,raw});
-}
-function processManual(){const raw=document.getElementById('inputText').value.trim();if(!raw){showError('入力されていません。');return;}process(raw);}
+function groupSorted(arr){const g=[];for(const v of arr){if(g.length&&g[g.length-1].v===v)g[g.length-1].c++;else g.push({v,c:1});}return g;}
+function calcDiffs(groups){if(groups.length<2)return[];return groups.slice(1).map((g,i)=>+(g.v-groups[i].v).toFixed(4));}
 
 // ══════════════════════════════════════
-//  カウントダウン操作
+//  山計バッファ
 // ══════════════════════════════════════
-function tapSorted(idx){
-  const st=sortedState[idx];
-  if(!st)return;
-  if(st.remaining>0) st.remaining--;
-  updateSortedRow(idx);
-  updateSortedProgress();
+function clearAccBuffer(){
+  accBuffer=[];accRawText=[];
+  document.getElementById('accNums').textContent='（まだ入力なし）';
 }
-function resetSorted(idx){
-  const st=sortedState[idx];
-  if(!st)return;
-  st.remaining=st.origCount;
-  updateSortedRow(idx);
-  updateSortedProgress();
+function addToAccBuffer(raw){
+  accRawText.push(raw);
+  document.getElementById('accNums').textContent=accRawText.join('　');
 }
-function clearAllSorted(){
-  sortedState.forEach((_,i)=>resetSorted(i));
+function processAccBuffer(){
+  if(!accRawText.length){showError('録音データがありません。');return;}
+  const combined=accRawText.join(' ');
+  clearAccBuffer();
+  processInput(combined);
 }
 
-function updateSortedRow(idx){
-  const st=sortedState[idx];
-  const row=document.querySelector(`.sorted-row-${idx}`);
-  if(!row||!st)return;
-  const badge=row.querySelector('.chk-badge');
-  const numEl=row.querySelector('.chk-num');
-  const done=st.remaining===0;
-  row.classList.toggle('done',done);
-  if(badge){
-    if(st.origCount>1){
-      badge.textContent=st.remaining;
-      badge.style.color=done?'var(--text3)':st.remaining<st.origCount?'var(--orange)':'var(--accent)';
-    } else {
-      badge.textContent=done?'✓':'';
-      badge.style.color='var(--text3)';
-    }
+// ══════════════════════════════════════
+//  メイン処理
+// ══════════════════════════════════════
+function processInput(raw){
+  hideError();clearResult();fireShown=false;
+  if(state.addZero&&!raw.includes('0'))raw='0 '+raw;
+
+  const extracted=detectAndExtract(raw);
+  const hasData=extracted.mm.length||extracted.shaku.length||extracted.inch.length;
+  if(!hasData){showError('数値が見つかりませんでした。');return;}
+
+  lastProcessedData={extracted,raw};
+  sortedState=[];diffState=[];
+
+  const sec=document.getElementById('resultSection');
+  sec.innerHTML='';sec.style.display='flex';
+
+  // mmカード
+  if(extracted.mm.length){
+    const nums=extracted.mm;
+    const sorted=[...nums].sort((a,b)=>a-b);
+    const groups=groupSorted(sorted),diffs=calcDiffs(groups);
+    const startIdx=sortedState.length;
+    groups.forEach(g=>sortedState.push({v:g.v,origCount:g.c,remaining:g.c}));
+    const diffStart=diffState.length;
+    diffs.forEach(()=>diffState.push({done:false}));
+    renderUnitSection(sec,'📏 mm','blue',nums,groups,diffs,startIdx,diffStart,{
+      labelFn:(g)=>`${g.v}${g.c>1?`<span style="font-size:12px;color:var(--accent);font-weight:700"> ×${g.c}</span>`:''}`,
+      copyFn:(g)=>g.c>1?`${g.v}×${g.c}`:String(g.v),
+      diffLabelFn:(groups,i)=>{
+        const fl=groups[i].c>1?`${groups[i].v}<sup style="font-size:10px;color:inherit">×${groups[i].c}</sup>`:String(groups[i].v);
+        const tl=groups[i+1].c>1?`${groups[i+1].v}<sup style="font-size:10px;color:inherit">×${groups[i+1].c}</sup>`:String(groups[i+1].v);
+        return{from:fl,to:tl,val:`+${diffs[i]}`};
+      },
+      inputNums:nums
+    });
   }
-}
-function updateSortedProgress(){
-  const done=sortedState.filter(s=>s.remaining===0).length;
-  const total=sortedState.length;
-  const bar=document.getElementById('sorted-prog-bar');
-  const txt=document.getElementById('sorted-prog-text');
-  if(bar)bar.style.width=total?`${(done/total)*100}%`:'0%';
-  if(txt)txt.textContent=`${done}/${total}`;
-}
 
-function tapDiff(idx){
-  if(!diffState[idx])return;
-  diffState[idx].done=!diffState[idx].done;
-  updateDiffRow(idx);
-  updateDiffProgress();
-}
-function resetDiff(idx){
-  if(!diffState[idx])return;
-  diffState[idx].done=false;
-  updateDiffRow(idx);
-  updateDiffProgress();
-}
-function clearAllDiff(){diffState.forEach((_,i)=>resetDiff(i));}
+  // 尺貫法カード
+  if(extracted.shaku.length){
+    const items=extracted.shaku;
+    const sorted=[...items].sort((a,b)=>a.sort_key-b.sort_key);
+    const mmVals=sorted.map(i=>i.mm);
+    const groups=groupSorted(mmVals),diffs=calcDiffs(groups);
+    const startIdx=sortedState.length;
+    sorted.forEach(i=>sortedState.push({v:i.mm,origCount:1,remaining:1,label:i.label,mmVal:i.mm}));
+    const diffStart=diffState.length;
+    diffs.forEach(()=>diffState.push({done:false}));
+    renderUnitSection(sec,'📐 尺貫法','purple',items,groups,diffs,startIdx,diffStart,{
+      labelFn:(_,i)=>sorted[i]?sorted[i].label:'',
+      subFn:(_,i)=>sorted[i]?`${sorted[i].mm} mm`:'',
+      copyFn:(_,i)=>sorted[i]?`${sorted[i].label}(${sorted[i].mm}mm)`:'',
+      diffLabelFn:(groups,i)=>{
+        const fi=sorted.find(x=>x.mm===groups[i].v);
+        const ti=sorted.find(x=>x.mm===groups[i+1].v);
+        const dSun=+(diffs[i]/SUN_MM).toFixed(3);
+        return{from:fi?fi.label:String(groups[i].v),to:ti?ti.label:String(groups[i+1].v),val:`+${diffs[i]}mm`,sub:`${dSun}寸`};
+      },
+      inputNums:sorted.map(i=>i.mm),
+      isShaku:true,sorted
+    });
+  }
 
-function updateDiffRow(idx){
-  const st=diffState[idx];
-  const row=document.querySelector(`.diff-row-${idx}`);
-  if(!row||!st)return;
-  row.classList.toggle('done',st.done);
-  const box=row.querySelector('.diff-chk-box');
-  if(box)box.textContent=st.done?'✓':'';
-}
-function updateDiffProgress(){
-  const done=diffState.filter(s=>s.done).length,total=diffState.length;
-  const bar=document.getElementById('diff-prog-bar'),txt=document.getElementById('diff-prog-text');
-  if(bar)bar.style.width=total?`${(done/total)*100}%`:'0%';
-  if(txt)txt.textContent=`${done}/${total}`;
+  // インチカード
+  if(extracted.inch.length){
+    const inches=extracted.inch;
+    const sorted=[...inches].sort((a,b)=>a-b);
+    const groups=groupSorted(sorted),diffs=calcDiffs(groups);
+    const startIdx=sortedState.length;
+    groups.forEach(g=>sortedState.push({v:g.v,origCount:g.c,remaining:g.c}));
+    const diffStart=diffState.length;
+    diffs.forEach(()=>diffState.push({done:false}));
+    renderUnitSection(sec,'🔧 インチ','yellow',inches,groups,diffs,startIdx,diffStart,{
+      labelFn:(g)=>`${toFtInStr(g.v)}${g.c>1?`<span style="font-size:12px;color:var(--accent);font-weight:700"> ×${g.c}</span>`:''}`,
+      subFn:(g)=>`${+(g.v*INCH_MM).toFixed(2)} mm`,
+      copyFn:(g)=>g.c>1?`${toFtInStr(g.v)}×${g.c}`:toFtInStr(g.v),
+      diffLabelFn:(groups,i)=>({from:toFtInStr(groups[i].v),to:toFtInStr(groups[i+1].v),val:`+${toFractionStr(diffs[i])}`,sub:`${+(diffs[i]*INCH_MM).toFixed(2)}mm`}),
+      inputNums:inches,
+      isInch:true
+    });
+  }
+
+  // メモボタン
+  const memoBtn=document.createElement('button');
+  memoBtn.className='memo-btn fade-in';
+  memoBtn.innerHTML='📄 メモをコピー';
+  memoBtn.onclick=()=>{
+    const lines=[`【きざみん】${now()}`,'','■ 入力',raw,''];
+    if(extracted.mm.length){
+      const sorted=[...extracted.mm].sort((a,b)=>a-b);
+      const groups=groupSorted(sorted);
+      lines.push('■ mm 並べ替え');
+      lines.push(groups.map(g=>g.c>1?`${g.v}×${g.c}`:String(g.v)).join(', '));
+      lines.push('■ mm 差分');
+      lines.push(calcDiffs(groups).join('\n')||'（1種類）');
+      lines.push('');
+    }
+    if(extracted.shaku.length){
+      const sorted=[...extracted.shaku].sort((a,b)=>a.sort_key-b.sort_key);
+      lines.push('■ 尺貫法 並べ替え');
+      lines.push(sorted.map(i=>`${i.label}(${i.mm}mm)`).join(', '));
+      lines.push('');
+    }
+    if(extracted.inch.length){
+      const sorted=[...extracted.inch].sort((a,b)=>a-b);
+      const groups=groupSorted(sorted);
+      lines.push('■ インチ 並べ替え');
+      lines.push(groups.map(g=>toFtInStr(g.v)).join(', '));
+    }
+    copyText(lines.join('\n'),'メモをコピーしました ✓');
+  };
+  sec.appendChild(memoBtn);
+
+  sec.classList.add('fade-in');
+  setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),80);
 }
 
 // ══════════════════════════════════════
-//  描画ヘルパー
+//  単位セクション描画
 // ══════════════════════════════════════
-function makeSortedRows(groups, labelFn, subFn){
-  return groups.map((g,i)=>{
-    const st=sortedState[i]||{remaining:g.c,origCount:g.c};
-    const badgeContent=g.c>1?String(st.remaining):'';
-    return`<div class="check-row sorted-row-${i}${st.remaining===0?' done':''}">
-      <div class="chk-tap" onclick="tapSorted(${i})">
-        <div class="chk-badge" style="color:${g.c>1&&st.remaining<g.c?'var(--orange)':'var(--accent)'}">${badgeContent}</div>
+function renderUnitSection(sec,title,cls,inputItems,groups,diffs,startIdx,diffStart,opts){
+  const {labelFn,subFn,copyFn,diffLabelFn,isShaku,isInch,sorted:shakuSorted}=opts;
+
+  // 抽出表示
+  let extractHTML='';
+  if(isShaku){
+    extractHTML=inputItems.map(i=>`<div style="display:inline-flex;flex-direction:column;gap:1px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:6px 10px;margin:3px">
+      <span style="font-family:var(--mono);font-size:15px;font-weight:500">${i.label}</span>
+      <span style="font-size:10px;color:var(--purple)">${i.mm} mm</span>
+    </div>`).join('');
+  } else if(isInch){
+    extractHTML=inputItems.map(v=>`<div style="display:inline-flex;flex-direction:column;gap:1px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:6px 10px;margin:3px">
+      <span style="font-family:var(--mono);font-size:15px;font-weight:500">${toFtInStr(v)}</span>
+      <span style="font-size:10px;color:var(--yellow)">${+(v*INCH_MM).toFixed(2)} mm</span>
+    </div>`).join('');
+  } else {
+    extractHTML=`<div style="font-family:var(--mono);font-size:16px;line-height:1.9;word-break:break-all">${inputItems.join('&ensp;')}</div>`;
+  }
+  sec.appendChild(makeCard('orange',`🔢 ${title} 抽出`,`<div style="flex-wrap:wrap;display:flex">${extractHTML}</div><div style="font-size:10px;color:var(--text3);margin-top:5px">${inputItems.length} 件</div>`));
+
+  // 並べ替えカード
+  const sc=groups.map((g,i)=>copyFn(g,i)).join(', ');
+  const sortRows=groups.map((g,i)=>{
+    const si=startIdx+i;
+    const st=sortedState[si]||{remaining:g.c,origCount:g.c};
+    return`<div class="check-row sorted-row-${si}${st.remaining===0?' done':''}">
+      <div class="chk-tap" onclick="tapSorted(${si})">
+        <div class="chk-badge" style="color:${g.c>1&&st.remaining<g.c?'var(--orange)':'var(--accent)'}">${g.c>1?String(st.remaining):''}</div>
         <div class="chk-content">
           <div class="chk-num">${labelFn(g,i)}</div>
           ${subFn?`<div class="chk-sub">${subFn(g,i)}</div>`:''}
         </div>
       </div>
-      <button class="chk-reset" onclick="resetSorted(${i})" title="リセット">↺</button>
+      <button class="chk-reset" onclick="resetSorted(${si})">↺</button>
     </div>`;
   }).join('');
-}
 
-function makeDiffRows(diffs, fromFn, toFn, valFn, subFn){
-  return diffs.map((d,i)=>{
-    const st=diffState[i]||{done:false};
-    return`<div class="diff-check-row diff-row-${i}${st.done?' done':''}">
-      <div class="diff-tap" onclick="tapDiff(${i})">
-        <div class="diff-chk-box">${st.done?'✓':''}</div>
-        <div class="diff-body">
-          <span class="diff-f">${fromFn(i)}</span>
-          <span class="diff-arr">›</span>
-          <span class="diff-t">${toFn(i)}</span>
-          <span class="diff-v">${valFn(d,i)}${subFn?`<span class="diff-vsub">${subFn(d,i)}</span>`:''}</span>
+  const gaugeId=`gauge-${startIdx}`;
+  const total=groups.length;
+  const sortCard=makeCard(cls,`↕ ${title} 並べ替え`,`
+    <div class="sort-tabs">
+      <button class="sort-tab active" onclick="reSort(${startIdx},${JSON.stringify(opts.inputNums||[])},${JSON.stringify(opts)},this,'asc')">昇順↑</button>
+      <button class="sort-tab" onclick="reSort(${startIdx},${JSON.stringify(opts.inputNums||[])},${JSON.stringify(opts)},this,'desc')">降順↓</button>
+      <button class="sort-tab" onclick="reSort(${startIdx},${JSON.stringify(opts.inputNums||[])},${JSON.stringify(opts)},this,'input')">入力順</button>
+    </div>
+    <div class="fire-gauge-wrap">
+      <div class="fire-gauge-bg"><div class="fire-gauge-bar" id="${gaugeId}" style="width:0%"></div></div>
+      <div class="fire-progress-text" id="${gaugeId}-txt">0/${total}</div>
+    </div>
+    <div class="check-list" id="sorted-list-${startIdx}">${sortRows}</div>
+    <div class="row-actions">
+      <button class="copy-btn" onclick="copyText(${JSON.stringify(sc)},'コピーしました')">📋 コピー</button>
+      <button class="clear-btn" onclick="clearSortedRange(${startIdx},${startIdx+groups.length})">全リセット</button>
+    </div>
+    <div class="action-row">
+      <button class="action-btn speak" onclick="speakText(${JSON.stringify(sc)})">🔊 復唱</button>
+    </div>
+    <div class="hint-box">タップで1本カット ／ ↺ で戻す</div>
+  `);
+  sec.appendChild(sortCard);
+
+  // 差分カード
+  let diffBody='';
+  if(diffs.length===0){
+    diffBody='<div style="color:var(--text3);font-size:13px">（1種類のため差分なし）</div>';
+  } else {
+    const diffGaugeId=`dgauge-${diffStart}`;
+    const diffRows=diffs.map((d,i)=>{
+      const di=diffStart+i;
+      const labels=diffLabelFn(groups,i);
+      return`<div class="diff-check-row diff-row-${di}${diffState[di]&&diffState[di].done?' done':''}">
+        <div class="diff-tap" onclick="tapDiff(${di})">
+          <div class="diff-chk-box">${diffState[di]&&diffState[di].done?'✓':''}</div>
+          <div class="diff-body">
+            <span class="diff-f">${labels.from}</span><span class="diff-arr">›</span>
+            <span class="diff-t">${labels.to}</span>
+            <span class="diff-v">${labels.val}${labels.sub?`<span class="diff-vsub">${labels.sub}</span>`:''}</span>
+          </div>
         </div>
+        <button class="diff-reset" onclick="resetDiff(${di})">↺</button>
+      </div>`;
+    }).join('');
+    diffBody=`
+      <div class="fire-gauge-wrap">
+        <div class="fire-gauge-bg"><div class="fire-gauge-bar" id="${diffGaugeId}" style="width:0%"></div></div>
+        <div class="fire-progress-text" id="${diffGaugeId}-txt">0/${diffs.length}</div>
       </div>
-      <button class="diff-reset" onclick="resetDiff(${i})" title="リセット">↺</button>
+      <div class="diff-check-list">${diffRows}</div>
+      <div class="row-actions">
+        <button class="copy-btn" onclick="copyText(${JSON.stringify(diffs.join('\n'))},'差分をコピーしました')">📋 差分コピー</button>
+        <button class="clear-btn" onclick="clearDiffRange(${diffStart},${diffStart+diffs.length})">全リセット</button>
+      </div>`;
+  }
+  sec.appendChild(makeCard('green',`⟷ ${title} 差分`,diffBody));
+}
+
+// 並び替え（簡易版 - 昇順/降順/入力順）
+function reSort(startIdx,inputNums,opts,btn,order){
+  // タブUI
+  const tabs=btn.parentElement.querySelectorAll('.sort-tab');
+  tabs.forEach(t=>t.classList.toggle('active',t===btn));
+  // 並び替え
+  let nums=[...inputNums];
+  if(order==='asc') nums.sort((a,b)=>a-b);
+  else if(order==='desc') nums.sort((a,b)=>b-a);
+  const groups=groupSorted(nums);
+  // チェックリスト再描画
+  const list=document.getElementById(`sorted-list-${startIdx}`);
+  if(!list)return;
+  // stateリセット
+  groups.forEach((g,i)=>{const si=startIdx+i;if(sortedState[si]){sortedState[si].v=g.v;sortedState[si].origCount=g.c;sortedState[si].remaining=g.c;}});
+  const rows=groups.map((g,i)=>{
+    const si=startIdx+i;
+    return`<div class="check-row sorted-row-${si}">
+      <div class="chk-tap" onclick="tapSorted(${si})">
+        <div class="chk-badge" style="color:var(--accent)">${g.c>1?String(g.c):''}</div>
+        <div class="chk-content"><div class="chk-num">${g.v}${g.c>1?`<span style="font-size:12px;color:var(--accent);font-weight:700"> ×${g.c}</span>`:''}</div></div>
+      </div>
+      <button class="chk-reset" onclick="resetSorted(${si})">↺</button>
     </div>`;
   }).join('');
-}
-
-function makeProgressHTML(id, total){
-  return`<div class="progress-wrap"><div class="progress-bar-bg"><div class="progress-bar" id="${id}-prog-bar" style="width:0%"></div></div><div class="progress-text" id="${id}-prog-text">0/${total}</div></div>`;
-}
-
-function rowActions(copyStr, clearFn){
-  return`<div class="row-actions">
-    <button class="copy-btn" onclick="copyText(${JSON.stringify(copyStr)},'コピーしました')">📋 コピー</button>
-    <button class="clear-btn" onclick="${clearFn}()">全リセット</button>
-  </div>`;
+  list.innerHTML=rows;
+  updateGaugeForRange(startIdx,startIdx+groups.length);
 }
 
 // ══════════════════════════════════════
-//  描画：mmモード
+//  チェック操作
 // ══════════════════════════════════════
-function renderMM({nums,groups,diffs,raw}){
-  const sec=document.getElementById('resultSection');sec.innerHTML='';sec.style.display='flex';
-
-  sec.appendChild(makeCard('orange','🔢 抽出',`
-    <div style="font-family:var(--mono);font-size:17px;line-height:1.9;word-break:break-all;color:var(--text)">${nums.join('&ensp;')}</div>
-    <div style="font-size:10px;color:var(--text3);margin-top:5px">${nums.length} 件</div>`));
-
-  const sc=groups.map(g=>g.c>1?`${g.v}×${g.c}`:String(g.v)).join(', ');
-  const sortedRows=makeSortedRows(groups,
-    (g)=>`${g.v}${g.c>1?`<span style="font-size:12px;color:var(--accent);font-weight:700"> ×${g.origCount||g.c}</span>`:''}`,
-    null
-  );
-  sec.appendChild(makeCard('blue','↕ 並べ替え',
-    makeProgressHTML('sorted',groups.length)+
-    `<div class="check-list">${sortedRows}</div>`+
-    rowActions(sc,'clearAllSorted')+
-    `<div class="hint-box" style="margin-top:8px">タップで1本カット ／ ↺ で戻す</div>`
-  ));
-
-  let diffBody='';
-  if(diffs.length===0){
-    diffBody='<div style="color:var(--text3);font-size:13px">（1種類のため差分なし）</div>';
-  } else {
-    const diffRows=makeDiffRows(diffs,
-      i=>{ const fl=groups[i].c>1?`${groups[i].v}<span style="font-size:10px;color:inherit;vertical-align:super">×${groups[i].c}</span>`:String(groups[i].v); return fl; },
-      i=>{ const tl=groups[i+1].c>1?`${groups[i+1].v}<span style="font-size:10px;color:inherit;vertical-align:super">×${groups[i+1].c}</span>`:String(groups[i+1].v); return tl; },
-      d=>`+${d}`,
-      null
-    );
-    diffBody=makeProgressHTML('diff',diffs.length)+
-      `<div class="diff-check-list">${diffRows}</div>`+
-      rowActions(diffs.join('\n'),'clearAllDiff');
+function tapSorted(idx){
+  const st=sortedState[idx];if(!st)return;
+  if(st.remaining>0)st.remaining--;
+  const row=document.querySelector(`.sorted-row-${idx}`);
+  if(row){
+    const done=st.remaining===0;
+    row.classList.toggle('done',done);
+    const badge=row.querySelector('.chk-badge');
+    if(badge){
+      if(st.origCount>1){badge.textContent=st.remaining;badge.style.color=done?'var(--text3)':st.remaining<st.origCount?'var(--orange)':'var(--accent)';}
+      else{badge.textContent=done?'✓':'';badge.style.color='var(--text3)';}
+    }
   }
-  sec.appendChild(makeCard('green','⟷ 差分',diffBody));
+  updateGaugeForRange(idx,idx+1);
+  checkFireComplete();
+}
+function resetSorted(idx){
+  const st=sortedState[idx];if(!st)return;
+  st.remaining=st.origCount;fireShown=false;
+  const row=document.querySelector(`.sorted-row-${idx}`);
+  if(row){row.classList.remove('done');const b=row.querySelector('.chk-badge');if(b){b.textContent=st.origCount>1?String(st.remaining):'';b.style.color='var(--accent)';}}
+  updateGaugeForRange(idx,idx+1);
+}
+function clearSortedRange(from,to){for(let i=from;i<to;i++)resetSorted(i);fireShown=false;}
 
-  addMemoBtn(sec,()=>[`【きざみん】${now()}`,'','■ 入力',raw,'','■ 並べ替え',sc,'','■ 差分',diffs.length?diffs.join('\n'):'（1種類）'].join('\n'));
-  finish(sec);
+function tapDiff(idx){
+  if(!diffState[idx])return;
+  diffState[idx].done=!diffState[idx].done;
+  const row=document.querySelector(`.diff-row-${idx}`);
+  if(row){row.classList.toggle('done',diffState[idx].done);const b=row.querySelector('.diff-chk-box');if(b)b.textContent=diffState[idx].done?'✓':'';}
+  checkFireComplete();
+}
+function resetDiff(idx){if(!diffState[idx])return;diffState[idx].done=false;fireShown=false;const row=document.querySelector(`.diff-row-${idx}`);if(row){row.classList.remove('done');const b=row.querySelector('.diff-chk-box');if(b)b.textContent='';}}
+function clearDiffRange(from,to){for(let i=from;i<to;i++)resetDiff(i);fireShown=false;}
+
+function updateGaugeForRange(from,to){
+  // 全体の進捗を各ゲージに反映（シンプルに全体ゲージを更新）
+  const totalS=sortedState.length,doneS=sortedState.filter(s=>s.remaining===0).length;
+  const totalD=diffState.length,doneD=diffState.filter(s=>s.done).length;
+  // 全ゲージバーを更新
+  document.querySelectorAll('.fire-gauge-bar').forEach(bar=>{
+    const pct=totalS?doneS/totalS*100:0;
+    bar.style.width=`${pct}%`;
+    bar.classList.toggle('has-progress',pct>0);
+    bar.classList.toggle('full',pct>=100&&totalD===doneD);
+  });
+  document.querySelectorAll('.fire-progress-text').forEach(txt=>{
+    if(txt.id.startsWith('dgauge')){txt.textContent=`${doneD}/${totalD}`;}
+    else{txt.textContent=`${doneS}/${totalS}`;}
+  });
 }
 
 // ══════════════════════════════════════
-//  描画：尺貫法モード
+//  🔥 炎エフェクト
 // ══════════════════════════════════════
-function renderShaku({items,sorted,groups,diffs,raw}){
-  const sec=document.getElementById('resultSection');sec.innerHTML='';sec.style.display='flex';
-
-  const exTags=items.map(i=>`<div style="background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:7px 11px;display:flex;flex-direction:column;gap:2px"><span style="font-family:var(--mono);font-size:16px;font-weight:500">${i.label}</span><span style="font-size:10px;color:var(--purple)">${i.mm} mm</span></div>`).join('');
-  sec.appendChild(makeCard('orange','🔢 抽出',`<div style="display:flex;flex-wrap:wrap;gap:6px">${exTags}</div>`));
-
-  const sc=sorted.map(i=>`${i.label}(${i.mm}mm)`).join(', ');
-  const sortedRows=makeSortedRows(
-    sorted.map(i=>({v:i.mm,c:1})),
-    (_,idx)=>sorted[idx].label,
-    (_,idx)=>`${sorted[idx].mm} mm`
-  );
-  sec.appendChild(makeCard('purple','↕ 並べ替え',
-    makeProgressHTML('sorted',sorted.length)+
-    `<div class="check-list">${sortedRows}</div>`+
-    rowActions(sc,'clearAllSorted')+
-    `<div class="hint-box" style="margin-top:8px">タップで完了 ／ ↺ で戻す</div>`
-  ));
-
-  let diffBody='';
-  if(diffs.length===0){
-    diffBody='<div style="color:var(--text3);font-size:13px">（1種類のため差分なし）</div>';
-  } else {
-    const diffRows=makeDiffRows(diffs,
-      i=>{ const fi=sorted.find(x=>x.mm===groups[i].v); return fi?fi.label:String(groups[i].v); },
-      i=>{ const ti=sorted.find(x=>x.mm===groups[i+1].v); return ti?ti.label:String(groups[i+1].v); },
-      d=>`+${d}mm`,
-      d=>`${+(d/SUN_MM).toFixed(3)}寸`
-    );
-    diffBody=makeProgressHTML('diff',diffs.length)+
-      `<div class="diff-check-list">${diffRows}</div>`+
-      rowActions(diffs.map(d=>d+'mm').join('\n'),'clearAllDiff');
+function checkFireComplete(){
+  const totalS=sortedState.length,doneS=sortedState.filter(s=>s.remaining===0).length;
+  const totalD=diffState.length,doneD=diffState.filter(s=>s.done).length;
+  const total=totalS+totalD,done=doneS+doneD;
+  if(total>0&&done===total&&!fireShown){fireShown=true;showFireEffect();}
+}
+function showFireEffect(){
+  const overlay=document.getElementById('fireOverlay');
+  const particles=document.getElementById('fireParticles');
+  particles.innerHTML='';
+  for(let i=0;i<24;i++){
+    const p=document.createElement('div');p.className='fire-particle';
+    p.textContent=['🔥','🔥','🔥','✨','💥','🔥'][Math.floor(Math.random()*6)];
+    p.style.left=`${Math.random()*100}%`;
+    p.style.animationDelay=`${Math.random()*.8}s`;
+    p.style.animationDuration=`${1.2+Math.random()*.8}s`;
+    p.style.fontSize=`${16+Math.random()*22}px`;
+    particles.appendChild(p);
   }
-  sec.appendChild(makeCard('green','⟷ 差分',diffBody));
-
-  addMemoBtn(sec,()=>[`【きざみん（尺貫法）】${now()}`,'','■ 入力',raw,'','■ 並べ替え',sc,'','■ 差分',diffs.length?diffs.map(d=>d+'mm').join('\n'):'（1種類）'].join('\n'));
-  finish(sec);
+  overlay.classList.add('show');
+  if(navigator.vibrate)navigator.vibrate([100,50,100,50,200]);
 }
+function closeFireOverlay(){document.getElementById('fireOverlay').classList.remove('show');}
 
 // ══════════════════════════════════════
-//  描画：インチモード
+//  復唱
 // ══════════════════════════════════════
-function renderInch({inches,groups,diffs,raw}){
-  const sec=document.getElementById('resultSection');sec.innerHTML='';sec.style.display='flex';
-
-  const exHTML=inches.map(v=>`<div style="background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:7px 11px;display:flex;flex-direction:column;gap:2px"><span style="font-family:var(--mono);font-size:16px;font-weight:500">${toFtInStr(v)}</span><span style="font-size:10px;color:var(--yellow)">${+(v*INCH_MM).toFixed(2)} mm</span></div>`).join('');
-  sec.appendChild(makeCard('orange','🔢 抽出',`<div style="display:flex;flex-wrap:wrap;gap:6px">${exHTML}</div><div style="font-size:10px;color:var(--text3);margin-top:6px">${inches.length} 件</div>`));
-
-  const sc=groups.map(g=>g.c>1?`${toFtInStr(g.v)}×${g.c}`:toFtInStr(g.v)).join(', ');
-  const sortedRows=makeSortedRows(groups,
-    (g)=>`${toFtInStr(g.v)}${g.c>1?`<span style="font-size:12px;color:var(--accent);font-weight:700"> ×${g.origCount||g.c}</span>`:''}`,
-    (g)=>`${+(g.v*INCH_MM).toFixed(2)} mm`
-  );
-  sec.appendChild(makeCard('yellow','↕ 並べ替え',
-    makeProgressHTML('sorted',groups.length)+
-    `<div class="check-list">${sortedRows}</div>`+
-    rowActions(sc,'clearAllSorted')+
-    `<div class="hint-box" style="margin-top:8px">タップで1本カット ／ ↺ で戻す</div>`
-  ));
-
-  let diffBody='';
-  if(diffs.length===0){
-    diffBody='<div style="color:var(--text3);font-size:13px">（1種類のため差分なし）</div>';
-  } else {
-    const diffRows=makeDiffRows(diffs,
-      i=>toFtInStr(groups[i].v),
-      i=>toFtInStr(groups[i+1].v),
-      d=>`+${toFractionStr(d)}`,
-      d=>`${+(d*INCH_MM).toFixed(2)}mm`
-    );
-    diffBody=makeProgressHTML('diff',diffs.length)+
-      `<div class="diff-check-list">${diffRows}</div>`+
-      rowActions(diffs.map(d=>toFractionStr(d)).join('\n'),'clearAllDiff');
-  }
-  sec.appendChild(makeCard('green','⟷ 差分',diffBody));
-
-  addMemoBtn(sec,()=>[`【きざみん（インチ）】${now()}`,'','■ 入力',raw,'','■ 並べ替え',sc,'','■ 差分',diffs.length?diffs.map(d=>`${toFractionStr(d)} (${+(d*INCH_MM).toFixed(2)}mm)`).join('\n'):'（1種類）'].join('\n'));
-  finish(sec);
+function speakText(text){
+  if(!('speechSynthesis'in window)){showToast('この端末は読み上げ非対応です');return;}
+  window.speechSynthesis.cancel();
+  const utt=new SpeechSynthesisUtterance(text.replace(/×/g,'、'));
+  utt.lang='ja-JP';utt.rate=0.9;
+  window.speechSynthesis.speak(utt);
+  showToast('読み上げ中…');
 }
-
-// ══════════════════════════════════════
-//  共通描画
-// ══════════════════════════════════════
-function addMemoBtn(sec,getMemo){const btn=document.createElement('button');btn.className='memo-btn fade-in';btn.innerHTML='📄 メモをコピー';btn.onclick=()=>copyText(getMemo(),'メモをコピーしました ✓');sec.appendChild(btn);}
-function makeCard(cls,title,body){const d=document.createElement('div');d.className='card fade-in';d.innerHTML=`<div class="card-header ${cls}"><span>${title}</span></div><div class="card-body">${body}</div>`;return d;}
-function finish(sec){sec.classList.add('fade-in');setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),80);}
-function now(){return new Date().toLocaleString('ja-JP',{dateStyle:'short',timeStyle:'short'});}
 
 // ══════════════════════════════════════
 //  録音
 // ══════════════════════════════════════
-function toggleRec(){if(!('webkitSpeechRecognition'in window)&&!('SpeechRecognition'in window)){showToast('Safariで開いてください');return;}isListening?stopRec():startRec();}
+function toggleRec(){
+  if(!('webkitSpeechRecognition'in window)&&!('SpeechRecognition'in window)){showToast('Safariで開いてください');return;}
+  if(isListening){stopRec();return;}
+  // 山計モードで蓄積中なら追加録音
+  startRec();
+}
+
 function startRec(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   recognition=new SR();recognition.lang='ja-JP';recognition.continuous=false;recognition.interimResults=true;
-  recognition.onstart=()=>{isListening=true;setRecState('listening');};
+  recognition.onstart=()=>{
+    isListening=true;
+    setRecState(state.yamakei&&accRawText.length?'accumulating':'listening');
+  };
   recognition.onresult=(e)=>{
     let interim='',final='';
-    for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)final+=t;else interim+=t;}
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const t=e.results[i][0].transcript;
+      if(e.results[i].isFinal)final+=t;else interim+=t;
+    }
     const box=document.getElementById('interimBox');
     box.textContent=interim||final||'認識中…';box.classList.add('active');
-    if(final){document.getElementById('inputText').value=final;box.textContent='「'+final+'」✓';setTimeout(()=>{box.classList.remove('active');process(final);setRecState('done');},600);}
+
+    if(final){
+      // 「ヨシ」チェック
+      const isYoshi=YOSHI_WORDS.some(w=>final.trim().includes(w));
+      box.textContent=isYoshi?'「ヨシ」✓ 計算します':'「'+final+'」✓';
+
+      if(isYoshi){
+        setTimeout(()=>{
+          box.classList.remove('active');
+          if(state.yamakei&&accRawText.length){
+            processAccBuffer();
+          } else if(document.getElementById('inputText').value.trim()){
+            processInput(document.getElementById('inputText').value.trim());
+          }
+          setRecState('done');
+        },500);
+      } else if(state.yamakei){
+        // 山計モード：蓄積
+        document.getElementById('inputText').value=final;
+        addToAccBuffer(final);
+        setTimeout(()=>{box.classList.remove('active');setRecState('accumulating');},600);
+      } else {
+        // 通常モード：自動計算
+        document.getElementById('inputText').value=final;
+        setTimeout(()=>{box.classList.remove('active');processInput(final);setRecState('done');},600);
+      }
+    }
   };
   recognition.onerror=(e)=>{if(e.error!=='no-speech')showToast('エラー: '+e.error);stopRec();};
   recognition.onend=()=>{if(isListening)stopRec();};
   recognition.start();
 }
-function stopRec(){isListening=false;try{recognition&&recognition.stop();}catch(e){}if(!document.getElementById('recBtn').classList.contains('done'))setRecState('idle');}
+function stopRec(){
+  isListening=false;
+  try{recognition&&recognition.stop();}catch(e){}
+  const btn=document.getElementById('recBtn');
+  if(!btn.classList.contains('done')&&!btn.classList.contains('accumulating'))setRecState('idle');
+}
 function setRecState(s){
   const btn=document.getElementById('recBtn'),icon=document.getElementById('recIcon'),label=document.getElementById('recLabel');
   btn.className='rec-btn '+s;
   if(s==='idle'){icon.textContent='🎤';label.textContent='録音開始';}
-  else if(s==='listening'){icon.textContent='⏹';label.textContent='録音中…  タップで停止';}
+  else if(s==='listening'){icon.textContent='⏹';label.textContent='録音中… タップで停止';}
+  else if(s==='accumulating'){icon.textContent='🎤';label.textContent='タップで追加録音';isListening=false;}
   else if(s==='done'){icon.textContent='🎤';label.textContent='もう一度録音';isListening=false;}
+}
+
+// ══════════════════════════════════════
+//  手入力
+// ══════════════════════════════════════
+function processManual(){
+  const raw=document.getElementById('inputText').value.trim();
+  if(!raw){showError('入力されていません。');return;}
+  if(state.yamakei){addToAccBuffer(raw);}
+  else{processInput(raw);}
 }
 
 // ══════════════════════════════════════
 //  ユーティリティ
 // ══════════════════════════════════════
+function makeCard(cls,title,body){const d=document.createElement('div');d.className='card fade-in';d.innerHTML=`<div class="card-header ${cls}"><span>${title}</span></div><div class="card-body">${body}</div>`;return d;}
+function now(){return new Date().toLocaleString('ja-JP',{dateStyle:'short',timeStyle:'short'});}
 function showError(msg){const b=document.getElementById('errorBox');b.innerHTML=`<div class="error-box">⚠ ${msg}</div>`;b.style.display='block';}
 function hideError(){document.getElementById('errorBox').style.display='none';}
-function clearResult(){const s=document.getElementById('resultSection');s.innerHTML='';s.style.display='none';}
-function resetAll(){document.getElementById('inputText').value='';document.getElementById('interimBox').classList.remove('active');hideError();clearResult();stopRec();setRecState('idle');sortedState=[];diffState=[];showToast('リセット');}
+function clearResult(){const s=document.getElementById('resultSection');s.innerHTML='';s.style.display='none';fireShown=false;}
+function resetAll(){
+  document.getElementById('inputText').value='';
+  document.getElementById('interimBox').classList.remove('active');
+  hideError();clearResult();stopRec();setRecState('idle');
+  sortedState=[];diffState=[];lastProcessedData=null;fireShown=false;
+  clearAccBuffer();
+  showToast('リセット');
+}
 function copyText(text,msg){
   if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>showToast(msg||'コピーしました'));}
   else{const el=document.createElement('textarea');el.value=text;el.style.cssText='position:fixed;opacity:0';document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);showToast(msg||'コピーしました');}
 }
 let toastTimer;
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2400);}
 document.getElementById('inputText').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();processManual();}});
 </script>
 
